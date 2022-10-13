@@ -3,4 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="tv_header_act_main">Brandy\'s</string>
+    <string name="tv_med_title_frag_home">Product Categories:</string>
+    <string name="tv_newest_med_title_frag_home"><![CDATA[Newest & Popular!]]></string>
+    <string name="tv_small_title_info_card">Product Name</string>
+    <string name="iv_small_image_info_card">TODO</string>
 </resources>
