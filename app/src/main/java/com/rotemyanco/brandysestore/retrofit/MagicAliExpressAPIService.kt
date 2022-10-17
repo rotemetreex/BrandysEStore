@@ -6,16 +6,18 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-
-
-
+import retrofit2.http.Path
 
 
 interface MagicAliExpressAPIService {
 
-    // product categories --> ALL
+    // product category List --> ALL
     @GET("api/v2/categories")
     suspend fun getAllProductCategories(): List<Category>
+
+    // productList by Cat Id --> all products in category
+    @GET("/api/category/{categoryId}/products")
+    suspend fun getAllProductsByCategoryId(@Path(value = "id") id: Int): List<Product>
 
 
     // best sales products --> ALL

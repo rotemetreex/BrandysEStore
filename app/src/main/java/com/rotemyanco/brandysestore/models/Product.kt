@@ -5,8 +5,6 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 
-
-
 data class ProductResponse(
     val docs: List<Product>,
     val totalDocs: Int,
@@ -20,11 +18,36 @@ data class ProductResponse(
     val nextPage: Int
 )
 
-@Entity
+
+////@TypeConverters(Converters::class)
+////@Entity(tableName = "product_small_image_urls")
+//data class ProductSmallImageUrls(
+//    @PrimaryKey
+//    val productId: String,
+//    val string: Array<String>
+//){
+//
+//    constructor(): this(
+//        "",
+//        arrayOf()
+//    )
+//}
+
+@Entity(tableName = "popular_new_products")
 data class Product(
 
+    val modificationDate: String,
+
     @SerializedName("app_sale_price")
-    val appSalePrice: Int,
+    val appSalePrice: Double,
+
+    val _id: String,
+
+    @SerializedName("commission_rate")
+    val commissionRate: Int,
+
+    @SerializedName("hot_product_commission_rate")
+    val hotProductCommissionRate: Float,
 
     @SerializedName("app_sale_price_currency")
     val appSalePriceCurrency: String,
@@ -64,25 +87,32 @@ data class Product(
     @SerializedName("product_detail_url")
     val productDetailUrl: String,
 
+    @SerializedName("product_main_image_url")
+    val productMainImageUrl: String,
+
+
 //    @SerializedName("product_small_image_urls")
-//    val productSmallImageUrls: Objects,
+//    val productSmallImageUrls: ProductSmallImageUrls,
+//    val productSmallImageUrls: String,
 
     @SerializedName("lastest_volume")
     val lastestVolume: Int,
 
     val wishedCount: Int,
 
-//    @SerializedName("metadata")
-//    val metadata: Metadata
+    @SerializedName("metadata")
+    val metadata: String
 
 ) {
     constructor(): this(
+        "",
+        0.0,
+        "",
         0,
+        0F,
         "",
         0,
         "",
-        0,
-        0,
 //        arrayListOf(),
 //        listOf(),
 //        listOf(),
@@ -90,16 +120,20 @@ data class Product(
 //        object: ,
 //        arrayListOf(),
         0,
-        "",
-        "",
-        "",
-        "",
-//        object,
         0,
         0,
-//        Metadata()
+        "",
+        "",
+        "",
+        "",
+        "",
+//        ProductSmallImageUrls(),
+        0,
+        0,
+        "",
     )
 }
+
 
 
 
