@@ -1,160 +1,114 @@
 package com.rotemyanco.brandysestore.retrofit
 
 import android.content.Context
-import android.util.Log
 import com.rotemyanco.brandysestore.database.*
+import com.rotemyanco.brandysestore.models.BaseProduct
+import com.rotemyanco.brandysestore.models.BaseProductResponse
 import com.rotemyanco.brandysestore.models.Category
-import com.rotemyanco.brandysestore.models.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Calendar
-import java.util.Date
+import java.util.*
 
 
-class MagicAliExpressAPIRepo(private val context: Context) {
-
-    private val db: MagicAliExpressDB = MagicAliExpressDB.create(context)
-    private val catDao: CategoryDao = db.getCategoryDao()
-    private val  productDao: ProductDao = db.getProductDao()
+class MagicAliExpressAPIRepo(
+    private val context: Context,
+    private val catDao: CategoryDao,
+    private val productDao: ProductDao,
+    private val service: MagicAliExpressAPIService
+) {
 
     private val TAG = "MagicAliExpressAPIRepo"
 
 
-        suspend fun getAllProductCategories(): List<Category> {
-            return withContext(Dispatchers.IO) {
-                val calendar = Calendar.getInstance()
-                val currentDate = calendar.time
-                val sharedPrefs =
-                    context.getSharedPreferences("MAGIC_ALI_FILE", Context.MODE_PRIVATE)
-                val nextUpdate = sharedPrefs.getLong("next_update_for_categories_table", 0)
-                val nextUpdateTime = Date(nextUpdate)
-                val compare = currentDate.compareTo(nextUpdateTime)
+    suspend fun getAllProductCategories(): List<Category> {
+        return withContext(Dispatchers.IO) {
+            val calendar = Calendar.getInstance()
+            val currentDate = calendar.time
+            val sharedPrefs = context.getSharedPreferences("MAGIC_ALI_FILE", Context.MODE_PRIVATE)
+            val nextUpdate = sharedPrefs.getLong("next_update_for_category_table", 0)
+            val nextUpdateTime = Date(nextUpdate)
+            val compare = currentDate.compareTo(nextUpdateTime)
 
-                val result = when {
-                    compare >= 0 -> {
-                        // server
-                        val categories =
-                            MagicAliExpressAPIService.create().getAllProductCategories()
-                        catDao.upsert(categories)
-                        calendar.add(Calendar.WEEK_OF_MONTH, 1)
-                        with(sharedPrefs.edit()) {
-                            putLong("next_update_for_categories_table", calendar.time.time)
-                            apply()
-                        }
-                        categories
+            val result = when {
+                compare >= 0 -> {
+
+                    // get data from server:
+                    val catList = service.getAllProductCategories()
+                    // update category table in local DB:
+                    catDao.upsert(catList)
+
+                    calendar.add(Calendar.WEEK_OF_MONTH, 1)
+                    with(sharedPrefs.edit()) {
+                        putLong("next_update_for_category_table", calendar.time.time)
+                        apply()
                     }
-                    else -> {
-                        // LocalDB
-                        Log.d(TAG, "getAllProductCategories:  -----> catDB.getAll()  -----> ${catDao.getAll()}")
-                        catDao.getAll()
-                    }
+                    catList
                 }
-                Log.d(TAG, "getAllProductCategories:       ------> result ---> $result")
-                return@withContext result
-            }
-        }
-
-
-
-        suspend fun getProductListSortedByPopularNewArrival(): List<Product> {
-            return withContext(Dispatchers.IO) {
-
-                val calendar = Calendar.getInstance()
-                val currentDate = calendar.time
-                val sharedPrefs =
-                    context.getSharedPreferences("MAGIC_ALI_FILE", Context.MODE_PRIVATE)
-                val nextUpdate = sharedPrefs.getLong("next_update_for_popular_new_product_table", 0)
-                val nextUpdateTime = Date(nextUpdate)
-                val compare = currentDate.compareTo(nextUpdateTime)
-
-                val result = when {
-                    compare >= 0 -> {
-                        // server
-                        val popularNewProducts =
-                            MagicAliExpressAPIService.create().getAllBestSalesProductsSortedByNewest()
-                        productDao.upsert(popularNewProducts)
-                        calendar.add(Calendar.WEEK_OF_MONTH, 1)
-
-                        with(sharedPrefs.edit()) {
-                            putLong("next_update_for_popular_new_product_table", calendar.time.time)
-                            apply()
-                        }
-                        popularNewProducts
-                    }
-                    else -> {
-                        // LocalDB
-                        Log.d(
-                            TAG,
-                            "getProductListSortedByPopularNewArrival:  -----> catDao.getAll()  -----> ${productDao.getAllPopularNewArrivals()}"
-                        )
-                        productDao.getAllPopularNewArrivals()
-                    }
+                else -> {
+                    catDao.getAll()
                 }
-                Log.d(TAG, "getProductListSortedByPopularNewArrival:       ------> result ---> $result")
-                return@withContext result
             }
+            return@withContext result
         }
-
-
     }
 
+    suspend fun getProductListSortedByPopularNewArrival(): List<BaseProduct> {
+        return withContext(Dispatchers.IO) {
 
+            val calendar = Calendar.getInstance()
+            val currentDate = calendar.time
+            val sharedPrefs = context.getSharedPreferences("MAGIC_ALI_FILE", Context.MODE_PRIVATE)
+            val nextUpdate =
+                sharedPrefs.getLong("next_update_for_popular_product_table_sort_type_newest", 0)
+            val nextUpdateTime = Date(nextUpdate)
+            val cmpr = currentDate.compareTo(nextUpdateTime)
 
+            val result = when {
+                cmpr >= 0 -> {
 
+                    // get data from server:
+                    val popularProductListSortedByNewest =
+                        service.getAllBestSalesProductsSortedByNewest()
+                    // update category table in local DB:
+                    productDao.upsertPopularProductsListSortedByNewest(
+                        popularProductListSortedByNewest
+                    )
+                    println("****************    server call ******************")
+                    calendar.add(Calendar.WEEK_OF_MONTH, 1)
 
+                    with(sharedPrefs.edit()) {
+                        putLong(
+                            "next_update_for_popular_product_table_sort_type_newest",
+                            calendar.time.time
+                        )
+                        apply()
+                    }
 
+                    popularProductListSortedByNewest
+                }
+                else -> {
+                    println("****************    DB call ******************")
+                    productDao.getAllPopularNewArrivals()
+                }
+            }
+            return@withContext result
+        }
+    }
 
+    suspend fun getAllProductsByCategoryId(id: String): BaseProductResponse {
+        return withContext(Dispatchers.IO) {
+            return@withContext service.getAllProductsByCategoryId(id)
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 //    suspend fun getSmallImageUrlsArrayByProductId(): Array<String> {
 //        return withContext(Dispatchers.IO) {
-//
 //            val smallImageUrlsArray = MagicAliExpressAPIService.create().
-//
-//
 //            return@withContext result
 //        }
 //    }
-
-
 
 

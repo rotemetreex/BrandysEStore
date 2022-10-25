@@ -9,7 +9,13 @@
         android:id="@+id/navigation_home"
         android:name="com.rotemyanco.brandysestore.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_categoryProductsFragment"
+            app:destination="@id/categoryProductsFragment"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +28,19 @@
         android:name="com.rotemyanco.brandysestore.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/categoryProductsFragment"
+        android:name="com.rotemyanco.brandysestore.ui.categoryProducts.CategoryProductsFragment"
+        android:label="fragment_category_products"
+        tools:layout="@layout/fragment_category_products" >
+        <argument
+            android:name="CAT_ID"
+            app:argType="string"
+            android:defaultValue="66" />
+    </fragment>
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.rotemyanco.brandysestore.ui.productDetails.ProductDetailsFragment"
+        android:label="fragment_product_details"
+        tools:layout="@layout/fragment_product_details" />
 </navigation>

@@ -7,5 +7,12 @@
     <string name="tv_med_title_frag_home">Product Categories:</string>
     <string name="tv_newest_med_title_frag_home"><![CDATA[Popular New Arrivals!]]></string>
     <string name="tv_small_title_info_card">Product Name</string>
-    <string name="iv_small_image_info_card">TODO</string>
+    <string name="iv_small_image_info_card">Product Main Image</string>
+    <string name="tv_header_frag_details">Product Details Fragment</string>
+    <string name="tv_product_name_frag_details">Product Name</string>
+    <string name="tv_id_frag_details">Product Id</string>
+    <string name="iv_main_image_url_frag_details">Product Main Image URL</string>
+    <string name="tv_product_details_url_frag_details">Product Details Url -- Link</string>
+    <string name="tv_header_frag_category_products">Category Products</string>
+    <string name="tv_cat_title_frag_category_products">Category Name</string>
 </resources>

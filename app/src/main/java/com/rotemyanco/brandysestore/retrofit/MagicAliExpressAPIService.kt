@@ -1,6 +1,7 @@
 package com.rotemyanco.brandysestore.retrofit
 
-import com.rotemyanco.brandysestore.models.Product
+import com.rotemyanco.brandysestore.models.BaseProduct
+import com.rotemyanco.brandysestore.models.BaseProductResponse
 import com.rotemyanco.brandysestore.models.Category
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,20 +18,28 @@ interface MagicAliExpressAPIService {
 
     // productList by Cat Id --> all products in category
     @GET("/api/category/{categoryId}/products")
-    suspend fun getAllProductsByCategoryId(@Path(value = "id") id: Int): List<Product>
+    suspend fun getAllProductsByCategoryId(@Path(value = "categoryId") id: String): BaseProductResponse
 
 
     // best sales products --> ALL
     @GET("api/bestSales/products")
-    suspend fun getAllBestSalesProducts(): List<Product>
+    suspend fun getAllBestSalesProducts(): List<BaseProduct>
 
 
     // best sales products --> SORTED by NEWEST
     @GET("api/bestSales/SortedByNewest")
-    suspend fun getAllBestSalesProductsSortedByNewest(): List<Product>
+    suspend fun getAllBestSalesProductsSortedByNewest(): List<BaseProduct>
 
 
-//    fun getById(id: Int): Product
+    // popular product by id
+    @GET("api/product/{productId}")
+    suspend fun getProductById(@Path("productId") productId: String): BaseProduct
+
+
+
+
+
+//    fun getById(id: Int): PopularProduct
 //
 //    fun upsert()
 

@@ -5,11 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.rotemyanco.brandysestore.models.BaseProduct
 import com.rotemyanco.brandysestore.models.Category
-import com.rotemyanco.brandysestore.models.Product
 
 
-@Database(entities = [Category::class, Product::class], version = 16)
+
+@Database(entities = [Category::class, BaseProduct::class], version = 24)
 @TypeConverters(Converters::class)
 abstract class MagicAliExpressDB : RoomDatabase() {
 
@@ -25,6 +26,7 @@ abstract class MagicAliExpressDB : RoomDatabase() {
                 MagicAliExpressDB::class.java,
                 "MAGIC_ALI_EXPRESS_DB"
             )
+                    // there are 3 ways to declare the converter class ----> JUST ONE! more than 1 annotation - ERROR
 //                .addTypeConverter(Converters::class)
                 .fallbackToDestructiveMigration()
                 .build()
