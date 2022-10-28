@@ -1,7 +1,6 @@
 package com.rotemyanco.brandysestore.ui.categoryProducts
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,9 +9,8 @@ import com.rotemyanco.brandysestore.App
 import com.rotemyanco.brandysestore.models.BaseProduct
 import kotlinx.coroutines.launch
 
-class CategoryProductsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val logTag = " CategoryProductsViewModel "
+class CategoryProductsViewModel(application: Application) : AndroidViewModel(application) {
 
 
     private val _productsByCat: MutableLiveData<List<BaseProduct>?> =
@@ -34,17 +32,14 @@ class CategoryProductsViewModel(application: Application) : AndroidViewModel(app
 
     fun getAllProductsByCategoryId() {
         viewModelScope.launch {
-            Log.d(logTag, " ----- getAllProductsByCategoryId()        ->      strCatId = ${strCatId.value.toString()} -----")
+
             val products = App.repo.getAllProductsByCategoryId(strCatId.value.toString()).docs
-            Log.d(logTag, "getAllProductsByCategoryId:        -> ${products[0]}")
             _productsByCat.postValue(products)
         }
-        Log.d(logTag, " ----- getAllProductsByCategoryId()        ->      strCatId = ${strCatId.value.toString()} ---")
-    }
-
-    init {
-        Log.d( "---- CategoryProductsViewModel -----", " ----  init:     strCatId = ${strCatId.value.toString()} -----")
     }
 
 }
 
+
+//    private val logTag = " CategoryProductsViewModel "
+//Log.d(logTag, " ----- getAllProductsByCategoryId()        ->      strCatId = ${strCatId.value.toString()} -----")

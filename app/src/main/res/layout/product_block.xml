@@ -26,13 +26,13 @@
 
         <ImageView
             android:id="@+id/iv_img_product_block"
-            android:layout_width="120dp"
-            android:layout_height="70dp"
+            android:layout_width="180dp"
+            android:layout_height="120dp"
 
-            android:layout_marginBottom="6dp"
+            android:layout_margin="16dp"
 
             android:contentDescription="@string/iv_small_image_info_card"
-            android:padding="25dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_launcher_foreground"
             android:text="@string/tv_small_title_info_card"
             app:layout_constraintBottom_toBottomOf="parent"
