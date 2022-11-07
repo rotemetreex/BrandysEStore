@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.rotemyanco.brandysestore.databinding.ProductBlockBinding
 import com.rotemyanco.brandysestore.models.BaseProduct
-import com.rotemyanco.brandysestore.models.Category
 
 
 class CategoryProductsAdapter(
@@ -16,7 +15,7 @@ class CategoryProductsAdapter(
 ):
     RecyclerView.Adapter<CategoryProductsAdapter.CategoryProductsVH>() {
 
-    private val TAG = "CategoryProductsAdapter"
+    private val logTag = "CategoryProductsAdapter"
     private lateinit var baseProduct: BaseProduct
     private lateinit var context: Context
 

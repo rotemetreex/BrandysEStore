@@ -46,7 +46,8 @@ class MagicAliExpressAPIRepo(
 						.onFailure {
 							val errorMessage = it.localizedMessage
 //							val code =
-							Toast.makeText(context, "***FAILURE!!***    --    error msg: $errorMessage", Toast.LENGTH_SHORT).show()
+//							Toast.makeText(context, "***FAILURE!!***    --    error msg: $errorMessage", Toast.LENGTH_SHORT).show()
+							Log.d(logTag, "getAllProductCategories:    onFailure    --->   ***FAILURE!!***    --    error msg: $errorMessage")
 							return@withContext mCatList
 						}
 					mCatList
@@ -105,6 +106,12 @@ class MagicAliExpressAPIRepo(
 	suspend fun getAllProductsByCategoryId(id: String): BaseProductResponse {
 		return withContext(Dispatchers.IO) {
 			return@withContext service.getAllProductsByCategoryId(id)
+		}
+	}
+
+	suspend fun getBaseProductById(id: String): BaseProduct {
+		return withContext(Dispatchers.IO) {
+			return@withContext service.getProductById(id)
 		}
 	}
 

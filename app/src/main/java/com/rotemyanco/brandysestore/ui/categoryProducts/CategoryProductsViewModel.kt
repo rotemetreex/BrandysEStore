@@ -30,10 +30,9 @@ class CategoryProductsViewModel(application: Application) : AndroidViewModel(app
         _strCatId.postValue(id)
     }
 
-    fun getAllProductsByCategoryId() {
+    fun getAllProductsByCategoryId(id: String) {
         viewModelScope.launch {
-
-            val products = App.repo.getAllProductsByCategoryId(strCatId.value.toString()).docs
+            val products = App.repo.getAllProductsByCategoryId(id).docs
             _productsByCat.postValue(products)
         }
     }

@@ -10,7 +10,7 @@ import com.rotemyanco.brandysestore.models.Category
 
 class CategoryAdapter(
     private val categories: List<Category>,
-    var onItemClick: (Category) -> Unit
+    private var onItemClick: (Category) -> Unit
 ) :
     RecyclerView.Adapter<CategoryAdapter.CategoryVH>() {
 

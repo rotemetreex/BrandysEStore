@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -33,31 +34,25 @@ class CategoryProductsFragment : Fragment() {
 	//  Rename and change types of parameters
 	private var mCatIdValue: String? = null
 
-	companion object {
-
-		// Rename parameter arguments, choose names that match
-		// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-		private const val ARG_PARAM1 = "CAT_ID"
-
-		fun newInstance(param1: String): CategoryProductsFragment {
-			val frag = CategoryProductsFragment()
-			val args = Bundle()
-
-			args.putString(ARG_PARAM1, param1)
-			frag.arguments = args
-
-			return frag
-		}
-	}
 
 	override fun onAttach(context: Context) {
 		super.onAttach(context)
 
 		bundle = requireArguments()
-		mCatIdValue = requireArguments().getString(ARG_PARAM1).toString()
+		mCatIdValue = requireArguments().getString("CAT_ID").toString()
 
 		catProductsViewModel = ViewModelProvider(this)[CategoryProductsViewModel::class.java]
 		catProductsViewModel.setCatId(mCatIdValue!!)
+
+
+		// check if i have correct data in strCatId in view-model -->
+		// on attach logs
+		with(catProductsViewModel) {
+			Log.d(logTag, "onAttach:    ---> mCatIdValue = $mCatIdValue")
+//			Log.d(logTag, "onAttach:    ---> strCatId.value = ${strCatId.value}")
+//			Log.d(logTag, "onAttach:    ---> productsByCat.value?.size = ${productsByCat.value?.size}")
+//			Log.d(logTag, "onAttach:    ---> productsByCat.value?.get(10) = ${productsByCat.value?.get(10)}")
+		}
 	}
 
 
@@ -68,64 +63,116 @@ class CategoryProductsFragment : Fragment() {
 		binding = FragmentCategoryProductsBinding.inflate(inflater, container, false)
 
 		with(catProductsViewModel) {
-			strCatId.observe(viewLifecycleOwner) {
-				getAllProductsByCategoryId()
-				productsByCat.observe(viewLifecycleOwner) { list ->
-					val size = list?.size
-					if (size != null) {
-						when {
-							size > 0 -> {
-								list.let {
-									mProductsByCat.addAll(list)
-									// categoryProductsAdapter.notifyItemRangeChanged(mProductsByCat.size, 0)
-									setUpAdapterAndRecycler()
-								}
-							}
-							else -> {
-								// list isnt populated yet!!
-								// delay and wait for the response
-								Log.d(logTag, "onCreateView:     else ->")
-								Log.d(logTag, "make toast! - ")
-								Toast.makeText(context, "*** NO DATA ***    --    no products in this category yet... ", Toast.LENGTH_LONG).show()
+			val id = requireArguments().getString("CAT_ID").toString()
+			Log.d(logTag, "onCreateView:      CAT_ID  ---> $id")
+			getAllProductsByCategoryId(id)
 
-								findNavController().navigate(R.id.navigation_home)
+			productsByCat.observe(viewLifecycleOwner) {
+				it?.let {
+					if (productsByCat.value?.isNotEmpty() == true) {
+						mProductsByCat.addAll(it)
+						Log.d(logTag, "onCreateView:     INSIDE OBSERVE  mProductsByCat.size -----> ${mProductsByCat.size}")
+					} else {
+						Toast.makeText(context, "*** NO DATA ***    --    no products in this category yet... ", Toast.LENGTH_LONG).show()
+						findNavController().navigate(R.id.navigation_home)
+					}
+					categoryProductsAdapter = CategoryProductsAdapter(mProductsByCat) { baseProduct ->
+						mBaseProduct = baseProduct
+						Log.d(logTag, "onViewCreated:          baseProduct.id  ------  ${baseProduct.productId} -------")
+
+						val b = Bundle()
+						b.putString("PRODUCT_ID", baseProduct.productId)
+
+						with(findNavController()) {
+							if (currentDestination?.id == R.id.categoryProductsFragment) {
+								navigate(R.id.action_categoryProductsFragment_to_productDetailsFragment, b)
 							}
 						}
 					}
-
+					with(binding.rcvCategoryProductsFragCategoryProducts) {
+						adapter = categoryProductsAdapter
+						layoutManager = GridLayoutManager(
+							this@CategoryProductsFragment.requireContext(),
+							2,
+							GridLayoutManager.VERTICAL,
+							false
+						)
+					}
 				}
-
 			}
-		}
+			Log.d(logTag, "onCreateView:      OUTSIDE OBSERVE    mProductsByCat.size  ----->        ${mProductsByCat.size}")
 
+		}
 		return binding.root
 	}
 
-	private fun setUpAdapterAndRecycler() {
-		categoryProductsAdapter =
-			CategoryProductsAdapter(mProductsByCat) { baseProduct ->
-				mBaseProduct = baseProduct
-				Log.d(logTag, "setUpAdapterAndRecycler:            ------  ${baseProduct.productId} -------")
-			}
-
-		with(binding.rcvCategoryProductsFragCategoryProducts) {
-			adapter = categoryProductsAdapter
-			layoutManager = GridLayoutManager(
-				this@CategoryProductsFragment.requireContext(),
-				2,
-				GridLayoutManager.VERTICAL,
-				false
-			)
-		}
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
 	}
-
 
 }
 
 
-//                    list?.let {
-//                        mProductsByCat.addAll(list)
-//                        setUpAdapterAndRecycler()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//with(catProductsViewModel) {
 //
-//                        categoryProductsAdapter.notifyItemRangeChanged(mProductsByCat.size, 0)
-//                    }
+////			strCatId.observe(viewLifecycleOwner) {
+//				Log.d(logTag, "onCreateView:     ----->   BEFORE getAllProductsByCategoryId() ----   productsByCat.value.size = ${productsByCat.value?.size}")
+//			requireArguments().getString("CAT_ID")?.let { getAllProductsByCategoryId(it) }
+//				Log.d(logTag, "onCreateView:     ----->   AFTER getAllProductsByCategoryId() ----   productsByCat.value.size = ${productsByCat.value?.size}")
+//
+//				productsByCat.observe(viewLifecycleOwner) {
+//					it?.let {
+//						if (productsByCat.value?.isNotEmpty() == true) {
+//							mProductsByCat.addAll(it)
+//						} else {
+//							Toast.makeText(context, "*** NO DATA ***    --    no products in this category yet... ", Toast.LENGTH_LONG).show()
+//							findNavController().navigate(R.id.navigation_home)
+//						}
+//					}
+//				}
+//					categoryProductsAdapter = CategoryProductsAdapter(mProductsByCat) { baseProduct ->
+//						mBaseProduct = baseProduct
+//						Log.d(logTag, "onViewCreated:          baseProduct.id  ------  ${baseProduct.productId} -------")
+//
+//						val b = Bundle()
+//						b.putString("PRODUCT_ID", baseProduct.productId)
+//
+////						findNavController().navigate(R.id.action_categoryProductsFragment_to_productDetailsFragment, b)
+//
+//						with(findNavController()) {
+//							if (currentDestination?.id == R.id.categoryProductsFragment) {
+//								navigate(R.id.action_categoryProductsFragment_to_productDetailsFragment, b)
+//							}
+//						}
+//					}
+//					with(binding.rcvCategoryProductsFragCategoryProducts) {
+//						adapter = categoryProductsAdapter
+//						layoutManager = GridLayoutManager(
+//							this@CategoryProductsFragment.requireContext(),
+//							2,
+//							GridLayoutManager.VERTICAL,
+//							false
+//						)
+//					}
+////			}
+//		}
+
