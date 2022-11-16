@@ -24,7 +24,6 @@ import com.rotemyanco.brandysestore.models.BaseProduct
 class CategoryProductsFragment : Fragment() {
 
 	private val logTag = "CategoryProductsFragment"
-	private lateinit var bundle: Bundle
 
 	private lateinit var catProductsViewModel: CategoryProductsViewModel
 	private lateinit var binding: FragmentCategoryProductsBinding
@@ -41,7 +40,6 @@ class CategoryProductsFragment : Fragment() {
 	override fun onAttach(context: Context) {
 		super.onAttach(context)
 
-		bundle = requireArguments()
 		mCatIdValue = requireArguments().getString("CAT_ID").toString()
 
 		catProductsViewModel = ViewModelProvider(this)[CategoryProductsViewModel::class.java]
@@ -50,14 +48,8 @@ class CategoryProductsFragment : Fragment() {
 
 		// check if i have correct data in strCatId in view-model -->
 		// on attach logs
-		with(catProductsViewModel) {
-			Log.d(logTag, "onAttach:    ---> mCatIdValue = $mCatIdValue")
-//			Log.d(logTag, "onAttach:    ---> strCatId.value = ${strCatId.value}")
-//			Log.d(logTag, "onAttach:    ---> productsByCat.value?.size = ${productsByCat.value?.size}")
-//			Log.d(logTag, "onAttach:    ---> productsByCat.value?.get(10) = ${productsByCat.value?.get(10)}")
-		}
+		Log.d(logTag, "onAttach:    ---> mCatIdValue = $mCatIdValue")
 	}
-
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -109,27 +101,11 @@ class CategoryProductsFragment : Fragment() {
 				}
 			}
 			Log.d(logTag, "onCreateView:      OUTSIDE OBSERVE    mProductsByCat.size  ----->        ${mProductsByCat.size}")
-
 		}
 		return binding.root
 	}
 
-
-//	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//		super.onViewCreated(view, savedInstanceState)
-//	}
-
-//	override fun onItemClick(item: BaseProduct) {
-//		mBaseProduct = item
-//		Log.d(logTag, "onViewCreated:          baseProduct.id  ------  ${item.productId} -------")
-//
-//		val b = Bundle()
-//		b.putString("PRODUCT_ID", item.productId)
-//		//findNavController(this).navigate(R.id.action_categoryProductsFragment_to_productDetailsFragment, b)
-//	}
-
 }
-
 
 //with(catProductsViewModel) {
 //
@@ -175,3 +151,16 @@ class CategoryProductsFragment : Fragment() {
 ////			}
 //		}
 
+
+//	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//		super.onViewCreated(view, savedInstanceState)
+//	}
+
+//	override fun onItemClick(item: BaseProduct) {
+//		mBaseProduct = item
+//		Log.d(logTag, "onViewCreated:          baseProduct.id  ------  ${item.productId} -------")
+//
+//		val b = Bundle()
+//		b.putString("PRODUCT_ID", item.productId)
+//		//findNavController(this).navigate(R.id.action_categoryProductsFragment_to_productDetailsFragment, b)
+//	}

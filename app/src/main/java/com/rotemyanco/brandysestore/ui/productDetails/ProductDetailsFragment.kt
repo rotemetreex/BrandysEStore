@@ -4,15 +4,18 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.bumptech.glide.Glide
+import com.rotemyanco.brandysestore.R
 import com.rotemyanco.brandysestore.databinding.FragmentProductDetailsBinding
 import com.rotemyanco.brandysestore.models.BaseProduct
 
@@ -24,6 +27,7 @@ class ProductDetailsFragment : Fragment() {
 	private lateinit var binding: FragmentProductDetailsBinding
 
 	private lateinit var mBaseProduct: BaseProduct
+	private lateinit var uri: Uri
 
 
 	// annotation - required by getSerializable() --->          ??????
@@ -68,10 +72,46 @@ class ProductDetailsFragment : Fragment() {
 
 
 			btnGoToAliExpressFragDetails.setOnClickListener {
-				val i = Intent(Intent.ACTION_VIEW, Uri.parse(mBaseProduct.productDetailUrl))
-				startActivity(i)
+				var url = mBaseProduct.productDetailUrl
+
+				if (url.isNotBlank()) {
+					when {
+						// covers all NONE http and https cases
+						url.startsWith("//") -> {
+							url = "http:$url"
+							uri = Uri.parse(url)
+						}
+						// covers http AND https cases
+						url.startsWith("http") -> {
+							uri = Uri.parse(url)
+						}
+					}
+					val i = Intent(Intent.ACTION_VIEW, uri)
+					startActivity(i)
+				} else {
+					Toast.makeText(requireContext(), "Product has no link to ali express, please try again at a later time..", Toast.LENGTH_LONG).show()
+					findNavController(this@ProductDetailsFragment).navigate(R.id.categoryProductsFragment)
+				}
 			}
 		}
 	}
 
 }
+
+
+//				if (
+//					(url.isNotBlank())
+//					&&
+//					(!url.startsWith("http:"))
+//					&&
+//					(!url.startsWith("https:"))
+//				) {
+//					url = "http:$url"
+//					uri = Uri.parse(url)
+//
+//					val i = Intent(Intent.ACTION_VIEW, uri)
+//					startActivity(i)
+//				} else {
+//					Toast.makeText(requireContext(), "Product has no link to ali express, please try again at a later time..", Toast.LENGTH_LONG).show()
+//					findNavController(this@ProductDetailsFragment).navigate(R.id.categoryProductsFragment)
+//				}
