@@ -11,7 +11,7 @@ import com.rotemyanco.brandysestore.models.BaseProduct
 
 class CategoryProductsAdapter(
     private val productsByCat: List<BaseProduct>,
-    private val onItemClicked: (BaseProduct) -> Unit
+    private val onItemClicked: OnItemClick<BaseProduct>
 ):
     RecyclerView.Adapter<CategoryProductsAdapter.CategoryProductsVH>() {
 
@@ -22,41 +22,38 @@ class CategoryProductsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryProductsVH {
         context = parent.context
         val binding =
-            ProductBlockBinding.inflate(LayoutInflater.from(context), parent, false)
+            ProductBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CategoryProductsVH(binding, productsByCat, onItemClicked)
     }
 
     override fun onBindViewHolder(holder: CategoryProductsVH, position: Int) {
-        with(holder.binding) {
-            baseProduct = productsByCat[position]
-            println("****************  ${baseProduct.productId}  *****************")
-            tvNameProductBlock.text = baseProduct.productId
-            val url = baseProduct.productMainImageUrl
+            with(holder.binding) {
+                baseProduct = productsByCat[position]
+                println("****************  ${baseProduct.productId}  *****************")
+                tvNameProductBlock.text = baseProduct.productId
+                val url = baseProduct.productMainImageUrl
 
-            Glide
-                .with(context)
-                .load(url)
-                .fitCenter()
+                Glide
+                    .with(context)
+                    .load(url)
+                    .fitCenter()
 //                .placeholder(R.drawable.loading_spinner)
-                .into(ivImgProductBlock)
-
-            onItemClicked(baseProduct)
-        }
+                    .into(ivImgProductBlock)
+            }
     }
 
     override fun getItemCount(): Int = productsByCat.size
 
-
     class CategoryProductsVH(
         val binding: ProductBlockBinding,
         private val  productsByCat: List<BaseProduct>,
-        private val onItemClicked: (BaseProduct) -> Unit
+        private val onItemClicked: OnItemClick<BaseProduct>
         ) :
         RecyclerView.ViewHolder(binding.root)
     {
             init {
                 binding.root.setOnClickListener {
-                    onItemClicked.invoke(productsByCat[adapterPosition])
+                    onItemClicked.onItemClick(productsByCat[adapterPosition])
                 }
             }
         }

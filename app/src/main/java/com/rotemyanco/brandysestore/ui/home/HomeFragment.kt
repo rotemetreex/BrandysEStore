@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rotemyanco.brandysestore.R
@@ -18,7 +17,8 @@ import com.rotemyanco.brandysestore.databinding.FragmentHomeBinding
 import com.rotemyanco.brandysestore.models.BaseProduct
 import com.rotemyanco.brandysestore.models.Category
 import com.rotemyanco.brandysestore.ui.categoryProducts.CategoryProductsViewModel
-
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import com.rotemyanco.brandysestore.adapters.OnItemClick
 
 class HomeFragment : Fragment() {
 
@@ -53,20 +53,23 @@ class HomeFragment : Fragment() {
 		binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
-		categoryAdapter = CategoryAdapter(mCategoryList) { category ->
-			Log.d(logTag, "onCreateView:            --------->          cat name: ${category.categoryName}")
-			Log.d(logTag, "onCreateView:            --------->          cat ID: ${category.id}")
+		categoryAdapter = CategoryAdapter(mCategoryList,
+			onItemClicked = object : OnItemClick<Category> {
+				override fun onItemClick(item: Category) {
+					Log.d(logTag, "onCreateView:            --------->          cat name: ${item.categoryName}")
+					Log.d(logTag, "onCreateView:            --------->          cat ID: ${item.id}")
 
-			mCatId = (category.id).toString()
+					mCatId = (item.id).toString()
 
-			val bundle = Bundle()
-			bundle.putString("CAT_ID", mCatId)
+					val bundle = Bundle()
+					bundle.putString("CAT_ID", mCatId)
 
-			findNavController().navigate(
-				R.id.action_navigation_home_to_categoryProductsFragment,
-				bundle
-			)
-		}
+					findNavController(this@HomeFragment).navigate(
+						R.id.action_navigation_home_to_categoryProductsFragment,
+						bundle
+					)
+				}
+			})
 
 		popularProductsAdapter = PopularProductsAdapter(mPopularProductListSortedByNewest)
 
@@ -117,3 +120,19 @@ class HomeFragment : Fragment() {
 }
 
 
+
+
+//		categoryAdapter = CategoryAdapter(mCategoryList) { category ->
+//			Log.d(logTag, "onCreateView:            --------->          cat name: ${category.categoryName}")
+//			Log.d(logTag, "onCreateView:            --------->          cat ID: ${category.id}")
+//
+//			mCatId = (category.id).toString()
+//
+//			val bundle = Bundle()
+//			bundle.putString("CAT_ID", mCatId)
+//
+//			findNavController(this@HomeFragment).navigate(
+//				R.id.action_navigation_home_to_categoryProductsFragment,
+//				bundle
+//			)
+//		}

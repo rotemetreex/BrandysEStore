@@ -10,43 +10,42 @@ import com.rotemyanco.brandysestore.models.Category
 
 class CategoryAdapter(
     private val categories: List<Category>,
-    private var onItemClick: (Category) -> Unit
+    private val onItemClicked: OnItemClick<Category>
 ) :
     RecyclerView.Adapter<CategoryAdapter.CategoryVH>() {
 
-    private val TAG = "CategoryAdapter"
+    private val logTag = "CategoryAdapter"
     private lateinit var category: Category
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryVH {
         val viewBinding =
             CategoryInfoCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CategoryVH(viewBinding, categories, onItemClick)
+        return CategoryVH(viewBinding, categories, onItemClicked)
     }
 
     override fun onBindViewHolder(holder: CategoryVH, position: Int) {
-        with(holder.viewBinding) {
+        with(holder.binding) {
             category = categories[position]
             tvSmallTitleCategoryInfoCard.text = category.categoryName
             Log.d(
-                TAG,
+                logTag,
                 "onBindViewHolder:       categoryList[$position] --> ${category.categoryName}"
             )
-
         }
     }
 
     override fun getItemCount(): Int = categories.size
 
     class CategoryVH(
-        val viewBinding: CategoryInfoCardBinding,
+        val binding: CategoryInfoCardBinding,
         private val categories: List<Category>,
-        private val onItemClick: (Category) -> Unit,
+        private val onItemClicked: OnItemClick<Category>
         ) :
-        RecyclerView.ViewHolder(viewBinding.root)
+        RecyclerView.ViewHolder(binding.root)
     {
             init {
-                viewBinding.root.setOnClickListener {
-                    onItemClick.invoke(categories[adapterPosition])
+                binding.root.setOnClickListener {
+                    onItemClicked.onItemClick(categories[adapterPosition])
                 }
             }
         }
