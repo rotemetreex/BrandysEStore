@@ -106,4 +106,15 @@
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toBottomOf="@+id/tv_product_price_frag_details" />
 
+    <Button
+        android:id="@+id/btn_goToAliExpress_frag_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/btn_goToAliExpress_frag_details"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_details_url_frag_details" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

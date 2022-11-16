@@ -1,6 +1,8 @@
 package com.rotemyanco.brandysestore.ui.productDetails
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -24,18 +26,13 @@ class ProductDetailsFragment : Fragment() {
 	private lateinit var mBaseProduct: BaseProduct
 
 
-
 	// annotation - required by getSerializable() --->          ??????
 	@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 	override fun onAttach(context: Context) {
 		super.onAttach(context)
 
-//		mProductIdValue = requireArguments().getString("PRODUCT_ID").toString()
-
 		mBaseProduct = requireArguments().getSerializable("BASE_PRODUCT", BaseProduct::class.java)!!
-
 		productDetailsViewModel = ViewModelProvider(this)[ProductDetailsViewModel::class.java]
-//		productDetailsViewModel.setBaseProductId(mProductIdValue!!)
 	}
 
 	override fun onCreateView(
@@ -68,14 +65,13 @@ class ProductDetailsFragment : Fragment() {
 				.fitCenter()
 //                .placeholder(R.drawable.loading_spinner)
 				.into(binding.ivMainImageUrlFragDetails)
+
+
+			btnGoToAliExpressFragDetails.setOnClickListener {
+				val i = Intent(Intent.ACTION_VIEW, Uri.parse(mBaseProduct.productDetailUrl))
+				startActivity(i)
+			}
 		}
 	}
 
 }
-
-
-//		productDetailsViewModel.baseProduct.observe(viewLifecycleOwner) {
-//			mBaseProduct = it
-//			Log.d(logTag, "onViewCreated:       inside baseProduct observe() --->${it.productId}")
-//			Log.d(logTag, "onViewCreated:       inside baseProduct observe() --->${mBaseProduct.productId}")
-//		}
