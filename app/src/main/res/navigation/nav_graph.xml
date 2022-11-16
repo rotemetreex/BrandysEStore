@@ -13,8 +13,7 @@
         <action
             android:id="@+id/action_navigation_home_to_categoryProductsFragment"
             app:destination="@id/categoryProductsFragment"
-            app:popUpTo="@id/navigation_home"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment
@@ -37,14 +36,12 @@
         <action
             android:id="@+id/action_categoryProductsFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment"
-            app:popUpTo="@id/categoryProductsFragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/categoryProductsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/productDetailsFragment"
         android:name="com.rotemyanco.brandysestore.ui.productDetails.ProductDetailsFragment"
         android:label="fragment_product_details"
-        tools:layout="@layout/fragment_product_details" >
-    </fragment>
+        tools:layout="@layout/fragment_product_details" />
 </navigation>
