@@ -12,7 +12,7 @@
     <string name="tv_product_name_frag_details">Product Name</string>
     <string name="tv_product_cat_frag_details">Product Cat</string>
     <string name="iv_main_image_url_frag_details">Product Main Image URL</string>
-    <string name="tv_product_details_url_frag_details">Product Details Url -- Link</string>
+    <string name="tv_product_details_url_frag_details">Product Details Url — Link</string>
     <string name="tv_header_frag_category_products">Category Products</string>
     <string name="tv_cat_title_frag_category_products">Category Name</string>
     <string name="tv_product_desc_frag_details">Product Description</string>
@@ -20,4 +20,5 @@
     <string name="tv_currency_type_frag_details">Currency Type</string>
     <string name="btn_goToAliExpress_frag_details">Product In AliExpress</string>
     <string name="btn_browse_rcv_last_btn">Browse more categories</string>
+    <string name="et_search_frag_home">Search Here</string>
 </resources>

@@ -15,7 +15,8 @@ import com.rotemyanco.brandysestore.models.Category
 
 class CategoryAdapter(
 	private val categories: List<Category>,
-	private val onItemClicked: OnItemClick<Category>
+	private val onItemClicked: OnItemClick<Category>,
+	private val onLastBtnClick: OnItemClick<Int>
 ) :
 	RecyclerView.Adapter<CategoryAdapter.CategoryVH>() {
 
@@ -33,7 +34,7 @@ class CategoryAdapter(
 				RcvLastBtnBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 			}
 		}
-		return CategoryVH(mViewBinding, categories, onItemClicked)
+		return CategoryVH(mViewBinding, categories, onItemClicked, onLastBtnClick)
 	}
 
 
@@ -47,6 +48,7 @@ class CategoryAdapter(
 				val btnBrowseMore: Button = holder.itemView.findViewById(R.id.btn_browse_rcv_last_btn)
 				btnBrowseMore.setOnClickListener {
 					Log.d(logTag, "onBindViewHolder:       ----->    onClickListener for view:              BUTTON CLICKED!")
+					onLastBtnClick.onItemClick(it.id)
 				}
 			}
 			CategoryInfoCardBinding::class.java -> {
@@ -72,11 +74,13 @@ class CategoryAdapter(
 		val binding: ViewBinding,
 		private val categories: List<Category>,
 		private val onItemClicked: OnItemClick<Category>,
+		private val onLastBtnClick: OnItemClick<Int>
 	) :
 		RecyclerView.ViewHolder(binding.root) {
 		init {
 			binding.root.setOnClickListener {
 				onItemClicked.onItemClick(categories[adapterPosition])
+				onLastBtnClick.onItemClick(R.id.btn_browse_rcv_last_btn)
 			}
 		}
 	}

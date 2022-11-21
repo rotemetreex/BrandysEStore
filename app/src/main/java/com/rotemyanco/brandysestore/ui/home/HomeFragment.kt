@@ -1,23 +1,29 @@
 package com.rotemyanco.brandysestore.ui.home
 
+//import android.widget.SearchView
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rotemyanco.brandysestore.R
 import com.rotemyanco.brandysestore.adapters.CategoryAdapter
+import com.rotemyanco.brandysestore.adapters.OnItemClick
 import com.rotemyanco.brandysestore.adapters.PopularProductsAdapter
 import com.rotemyanco.brandysestore.databinding.FragmentHomeBinding
 import com.rotemyanco.brandysestore.models.BaseProduct
 import com.rotemyanco.brandysestore.models.Category
 import com.rotemyanco.brandysestore.ui.categoryProducts.CategoryProductsViewModel
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import com.rotemyanco.brandysestore.adapters.OnItemClick
+
 
 class HomeFragment : Fragment() {
 
@@ -40,7 +46,7 @@ class HomeFragment : Fragment() {
 	private var mPopularProductListSortedByNewest = mutableListOf<BaseProduct>()
 
 	private lateinit var mCatId: String
-
+	private lateinit var actvSearch: AutoCompleteTextView
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -50,7 +56,22 @@ class HomeFragment : Fragment() {
 		homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 		categoryProductsViewModel = ViewModelProvider(this)[CategoryProductsViewModel::class.java]
 		binding = FragmentHomeBinding.inflate(inflater, container, false)
+		actvSearch = binding.actvSearchFragHome
 
+		binding.actvSearchFragHome.addTextChangedListener(object : TextWatcher {
+			override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+				Log.d(logTag, "beforeTextChanged: ")
+			}
+
+			override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+				Log.d(logTag, "onTextChanged:        ------>   ${s.toString()}")
+			}
+
+			override fun afterTextChanged(s: Editable?) {
+				Log.d(logTag, "afterTextChanged: ")
+			}
+
+		})
 
 		categoryAdapter = CategoryAdapter(mCategoryList,
 			onItemClicked = object : OnItemClick<Category> {
@@ -68,6 +89,16 @@ class HomeFragment : Fragment() {
 						bundle
 					)
 				}
+			},
+			onLastBtnClick = object : OnItemClick<Int> {
+				override fun onItemClick(item: Int) {
+					Log.d(logTag, "onCreateView:            --------->          Last Button view id: $item")
+
+					actvSearch.visibility =
+						if (item == R.id.btn_browse_rcv_last_btn) View.VISIBLE
+					else View.GONE
+				}
+
 			})
 
 		popularProductsAdapter = PopularProductsAdapter(mPopularProductListSortedByNewest)
@@ -113,4 +144,16 @@ class HomeFragment : Fragment() {
 			}
 		}
 	}
+
+	// To animate view slide out from bottom to top
+//	private fun slideToTop(view: View) {
+//		view.visibility = View.VISIBLE
+//		val animate = TranslateAnimation(0F, 0F, 0F, (-view.height).toFloat())
+//		animate.duration = 500
+//		animate.fillAfter = true
+//		view.startAnimation(animate)
+//		view.visibility = View.GONE
+//	}
+
+
 }
