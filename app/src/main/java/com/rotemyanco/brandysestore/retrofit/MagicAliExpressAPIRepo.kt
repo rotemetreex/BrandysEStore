@@ -2,7 +2,6 @@ package com.rotemyanco.brandysestore.retrofit
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.rotemyanco.brandysestore.database.*
 import com.rotemyanco.brandysestore.models.BaseProduct
 import com.rotemyanco.brandysestore.models.BaseProductResponse
@@ -21,7 +20,6 @@ class MagicAliExpressAPIRepo(
 
 	private val logTag = "MagicAliExpressAPIRepo"
 	private var mCatList = mutableListOf<Category>()
-//	private var mResult: Result<List<Category>> = Result()
 
 
 	suspend fun getAllProductCategories(): List<Category> {
@@ -40,13 +38,16 @@ class MagicAliExpressAPIRepo(
 						.onSuccess {
 							mCatList.addAll(it)
 							Log.d(logTag, "getAllProductCategories:    -----> mCatList  is populated:  mCatList.size() = ${mCatList.size}")
+
+// 						set up a function to sift through empty categories!!
+//							val catListNoEmptyCatSort = sortPopulatedCategoriesOnly(mCatList)
+//							catDao.upsert(catListNoEmptyCatSort)
+
 							catDao.upsert(mCatList)
 							return@withContext it
 						}
 						.onFailure {
 							val errorMessage = it.localizedMessage
-//							val code =
-//							Toast.makeText(context, "***FAILURE!!***    --    error msg: $errorMessage", Toast.LENGTH_SHORT).show()
 							Log.d(logTag, "getAllProductCategories:    onFailure    --->   ***FAILURE!!***    --    error msg: $errorMessage")
 							return@withContext mCatList
 						}
@@ -125,4 +126,16 @@ class MagicAliExpressAPIRepo(
 //        }
 //    }
 
-
+//	private suspend fun sortPopulatedCategoriesOnly(catList: MutableList<Category>): MutableList<Category> {
+//		 val populatedCatOnlySort = mutableListOf<Category>()
+//		for (cat in catList) {
+//			Log.d(logTag, "sortPopulatedCategoriesOnly:      ----> ${cat.id}")
+//			val productListByCatId = getAllProductsByCategoryId((cat.id).toString())
+//			when {
+//				(productListByCatId.docs.isNotEmpty()) -> {
+//					populatedCatOnlySort.add(cat)
+//				}
+//			}
+//		}
+//		return populatedCatOnlySort
+//	}

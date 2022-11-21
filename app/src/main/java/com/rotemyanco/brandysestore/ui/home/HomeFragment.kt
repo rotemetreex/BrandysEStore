@@ -1,6 +1,5 @@
 package com.rotemyanco.brandysestore.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -91,14 +90,13 @@ class HomeFragment : Fragment() {
 				)
 			}
 		}
-
 		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		homeViewModel.categories.observe(viewLifecycleOwner) { t ->
+		homeViewModel.popularCategories.observe(viewLifecycleOwner) { t ->
 			t?.let {
 				mCategoryList.addAll(it)
 				categoryAdapter.notifyItemRangeChanged(0, mCategoryList.size)
@@ -114,25 +112,5 @@ class HomeFragment : Fragment() {
 				)
 			}
 		}
-
 	}
-
 }
-
-
-
-
-//		categoryAdapter = CategoryAdapter(mCategoryList) { category ->
-//			Log.d(logTag, "onCreateView:            --------->          cat name: ${category.categoryName}")
-//			Log.d(logTag, "onCreateView:            --------->          cat ID: ${category.id}")
-//
-//			mCatId = (category.id).toString()
-//
-//			val bundle = Bundle()
-//			bundle.putString("CAT_ID", mCatId)
-//
-//			findNavController(this@HomeFragment).navigate(
-//				R.id.action_navigation_home_to_categoryProductsFragment,
-//				bundle
-//			)
-//		}

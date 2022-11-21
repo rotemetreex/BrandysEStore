@@ -12,33 +12,17 @@ import kotlinx.coroutines.launch
 
 class CategoryProductsViewModel(application: Application) : AndroidViewModel(application) {
 
+	private val _productsByCat: MutableLiveData<List<BaseProduct>?> =
+		MutableLiveData<List<BaseProduct>?>()
 
-    private val _productsByCat: MutableLiveData<List<BaseProduct>?> =
-        MutableLiveData<List<BaseProduct>?>()
-
-    val productsByCat: LiveData<List<BaseProduct>?>
-        get() = _productsByCat
-
-
-    private val _strCatId: MutableLiveData<String> = MutableLiveData<String>()
-
-    val strCatId: LiveData<String>
-        get() = _strCatId
+	val productsByCat: LiveData<List<BaseProduct>?>
+		get() = _productsByCat
 
 
-    fun setCatId(id: String) {
-        _strCatId.postValue(id)
-    }
-
-    fun getAllProductsByCategoryId(id: String) {
-        viewModelScope.launch {
-            val products = App.repo.getAllProductsByCategoryId(id).docs
-            _productsByCat.postValue(products)
-        }
-    }
-
+	fun getAllProductsByCategoryId(id: String) {
+		viewModelScope.launch {
+			val products = App.repo.getAllProductsByCategoryId(id).docs
+			_productsByCat.postValue(products)
+		}
+	}
 }
-
-
-//    private val logTag = " CategoryProductsViewModel "
-//Log.d(logTag, " ----- getAllProductsByCategoryId()        ->      strCatId = ${strCatId.value.toString()} -----")

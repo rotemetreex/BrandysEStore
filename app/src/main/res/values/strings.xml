@@ -4,7 +4,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="tv_header_act_main">Brandy\'s</string>
-    <string name="tv_med_title_frag_home">Product Categories:</string>
+    <string name="tv_med_title_frag_home">Popular Categories:</string>
     <string name="tv_newest_med_title_frag_home"><![CDATA[Popular New Arrivals!]]></string>
     <string name="tv_small_title_info_card">Product Name</string>
     <string name="iv_small_image_info_card">Product Main Image</string>
@@ -19,4 +19,5 @@
     <string name="tv_product_price_frag_details">Price Amount</string>
     <string name="tv_currency_type_frag_details">Currency Type</string>
     <string name="btn_goToAliExpress_frag_details">Product In AliExpress</string>
+    <string name="btn_browse_rcv_last_btn">Browse more categories</string>
 </resources>
