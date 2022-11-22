@@ -26,15 +26,16 @@
 
         <ImageView
             android:id="@+id/iv_small_image_popular_info_card"
+            android:contentDescription="@string/iv_small_image_info_card"
+            android:text="@string/tv_small_title_info_card"
+
             android:layout_width="120dp"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="15dp"
-            android:contentDescription="@string/iv_small_image_info_card"
 
             android:padding="25dp"
             android:src="@drawable/ic_launcher_foreground"
-            android:text="@string/tv_small_title_info_card"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

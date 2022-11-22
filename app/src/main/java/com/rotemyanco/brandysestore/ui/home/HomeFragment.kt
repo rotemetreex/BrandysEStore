@@ -95,7 +95,10 @@ class HomeFragment : Fragment() {
 					Log.d(logTag, "onCreateView:            --------->          Last Button view id: $item")
 
 					actvSearch.visibility =
-						if (item == R.id.btn_browse_rcv_last_btn) View.VISIBLE
+						if (item == R.id.btn_browse_rcv_last_btn) {
+							View.VISIBLE
+//							actvSearch.set
+						}
 					else View.GONE
 				}
 

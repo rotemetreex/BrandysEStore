@@ -20,5 +20,5 @@
     <string name="tv_currency_type_frag_details">Currency Type</string>
     <string name="btn_goToAliExpress_frag_details">Product In AliExpress</string>
     <string name="btn_browse_rcv_last_btn">Browse more categories</string>
-    <string name="et_search_frag_home">Search Here</string>
+    <string name="et_search_frag_home">Search More Categories</string>
 </resources>
