@@ -59,7 +59,7 @@
         android:layout_height="0dp"
 
         android:background="@color/material_dynamic_tertiary60"
-        android:fontFamily="@font/alegreya_sans_sc_medium_italic"
+        android:fontFamily="@font/alegreya_sans_sc_medium_italic_downloadable"
         android:gravity="start|bottom"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
@@ -113,7 +113,7 @@
         android:layout_height="0dp"
 
         android:background="@color/material_dynamic_tertiary60"
-        android:fontFamily="@font/alegreya_sans_sc_medium_italic"
+        android:fontFamily="@font/alegreya_sans_sc_medium_italic_downloadable"
         android:gravity="start|bottom"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
