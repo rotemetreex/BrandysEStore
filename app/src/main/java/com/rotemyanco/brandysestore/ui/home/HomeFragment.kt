@@ -1,15 +1,16 @@
 package com.rotemyanco.brandysestore.ui.home
 
-//import android.widget.SearchView
+import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.TranslateAnimation
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
@@ -43,10 +44,15 @@ class HomeFragment : Fragment() {
 	private lateinit var popularProductsAdapter: PopularProductsAdapter
 
 	private var mCategoryList = mutableListOf<Category>()
+	private var mmCategoryList = mutableListOf<Category>()
 	private var mPopularProductListSortedByNewest = mutableListOf<BaseProduct>()
+
+	private var mCatNameList = mutableListOf<String>()
 
 	private lateinit var mCatId: String
 	private lateinit var actvSearch: AutoCompleteTextView
+	private lateinit var imm: InputMethodManager
+
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -58,26 +64,12 @@ class HomeFragment : Fragment() {
 		binding = FragmentHomeBinding.inflate(inflater, container, false)
 		actvSearch = binding.actvSearchFragHome
 
-		binding.actvSearchFragHome.addTextChangedListener(object : TextWatcher {
-			override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-				Log.d(logTag, "beforeTextChanged: ")
-			}
+		imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-			override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-				Log.d(logTag, "onTextChanged:        ------>   ${s.toString()}")
-			}
-
-			override fun afterTextChanged(s: Editable?) {
-				Log.d(logTag, "afterTextChanged: ")
-			}
-
-		})
 
 		categoryAdapter = CategoryAdapter(mCategoryList,
 			onItemClicked = object : OnItemClick<Category> {
 				override fun onItemClick(item: Category) {
-					Log.d(logTag, "onCreateView:            --------->          cat name: ${item.categoryName}")
-					Log.d(logTag, "onCreateView:            --------->          cat ID: ${item.id}")
 
 					mCatId = (item.id).toString()
 
@@ -92,16 +84,11 @@ class HomeFragment : Fragment() {
 			},
 			onLastBtnClick = object : OnItemClick<Int> {
 				override fun onItemClick(item: Int) {
-					Log.d(logTag, "onCreateView:            --------->          Last Button view id: $item")
-
-					actvSearch.visibility =
+					binding.actvSearchFragHome.visibility =
 						if (item == R.id.btn_browse_rcv_last_btn) {
 							View.VISIBLE
-//							actvSearch.set
-						}
-					else View.GONE
+						} else View.GONE
 				}
-
 			})
 
 		popularProductsAdapter = PopularProductsAdapter(mPopularProductListSortedByNewest)
@@ -130,25 +117,89 @@ class HomeFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		homeViewModel.popularCategories.observe(viewLifecycleOwner) { t ->
-			t?.let {
-				mCategoryList.addAll(it)
-				categoryAdapter.notifyItemRangeChanged(0, mCategoryList.size)
-			}
-		}
+		with(homeViewModel) {
 
-		homeViewModel.productsSortByPopularNewArrivals.observe(viewLifecycleOwner) { t ->
-			t?.let {
-				mPopularProductListSortedByNewest.addAll(it)
-				popularProductsAdapter.notifyItemRangeChanged(
-					0,
-					mPopularProductListSortedByNewest.size
-				)
+			popularCategories.observe(viewLifecycleOwner) { t ->
+				t?.let {
+					mCategoryList.addAll(it)
+					categoryAdapter.notifyItemRangeChanged(0, mCategoryList.size)
+				}
+			}
+
+			unfilteredCategories.observe(viewLifecycleOwner) { t ->
+				t?.let {
+					mmCategoryList.addAll(it)
+					val dropDownItemsResArray = mmCategoryList.toTypedArray()
+					val mAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, dropDownItemsResArray)
+					actvSearch.threshold = 1
+					actvSearch.setAdapter(mAdapter)
+
+					with(actvSearch) {
+
+						setOnFocusChangeListener { view, e ->
+							actvSearch.requestFocus()
+
+//							(actvSearch as EditText).setText("")
+							actvSearch.performCompletion()
+							(actvSearch as TextView).text = ""
+							actvSearch.performClick()
+						}
+
+						setOnTouchListener(View.OnTouchListener { v, e ->
+							if (e.action == KeyEvent.ACTION_DOWN) {
+
+								v.performClick()
+								actvSearch.setSelection(actvSearch.text.length)
+							}
+							return@OnTouchListener true
+						})
+						setOnItemClickListener { parent, view, position, id ->
+
+							actvSearch.text = null
+							actvSearch.isFocusable = false
+
+							val selectedItem = parent.getItemAtPosition(position).toString()
+							val selectedItemId = (parent.getItemAtPosition(position) as Category).id
+							Log.d(logTag, "onCreateView:          ----> $selectedItem   ")
+							Log.d(logTag, "onCreateView:          ----> $selectedItemId   ")
+
+							val bundle = Bundle()
+							bundle.putString("CAT_ID", selectedItemId.toString())
+
+							findNavController(this@HomeFragment).navigate(
+								R.id.action_navigation_home_to_categoryProductsFragment,
+								bundle
+							)
+						}
+						setOnDismissListener {
+							Log.d(logTag, "onCreateView:          ----> Suggestion is Closed")
+							imm.hideSoftInputFromWindow(actvSearch.windowToken, 0)
+
+						}
+					}
+				}
+			}
+			catNameList.observe(viewLifecycleOwner) { t ->
+				t?.let {
+					mCatNameList.addAll(it)
+				}
+			}
+			productsSortByPopularNewArrivals.observe(viewLifecycleOwner) { t ->
+				t?.let {
+					mPopularProductListSortedByNewest.addAll(it)
+					popularProductsAdapter.notifyItemRangeChanged(
+						0,
+						mPopularProductListSortedByNewest.size
+					)
+				}
 			}
 		}
 	}
 
-	// To animate view slide out from bottom to top
+}
+
+
+// To animate view slide out from bottom to top
 //	private fun slideToTop(view: View) {
 //		view.visibility = View.VISIBLE
 //		val animate = TranslateAnimation(0F, 0F, 0F, (-view.height).toFloat())
@@ -159,4 +210,11 @@ class HomeFragment : Fragment() {
 //	}
 
 
-}
+//			val et = actvSearch as EditText
+//				with(et) {
+//					when (EditText::class.java) {
+//						this -> {
+//							setSelection(0)
+//						}
+//					}
+//			}

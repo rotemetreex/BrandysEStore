@@ -40,20 +40,15 @@ class CategoryAdapter(
 
 	override fun onBindViewHolder(holder: CategoryVH, position: Int) {
 
-		Log.d(logTag, "onBindViewHolder:       --->     holder.itemView.id: ${holder.itemView.id}")
-		Log.d(logTag, "onBindViewHolder:       --->     holder.itemView.rootView.id: ${holder.itemView.rootView.id}")
-
 		when (holder.binding.javaClass) {
 			RcvLastBtnBinding::class.java -> {
 				val btnBrowseMore: Button = holder.itemView.findViewById(R.id.btn_browse_rcv_last_btn)
 				btnBrowseMore.setOnClickListener {
-					Log.d(logTag, "onBindViewHolder:       ----->    onClickListener for view:              BUTTON CLICKED!")
 					onLastBtnClick.onItemClick(it.id)
 				}
 			}
 			CategoryInfoCardBinding::class.java -> {
 				holder.itemView.findViewById<TextView>(R.id.tv_small_title_category_info_card).text = categories[position].categoryName
-				Log.d(logTag, "onBindViewHolder:       categoryList[$position] --> ${categories[position].categoryName}")
 			}
 			else -> {
 				println("******      --  Error --      *****")

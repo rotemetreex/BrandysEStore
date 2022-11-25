@@ -35,13 +35,23 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 	val productsSortByPopularNewArrivals: LiveData<List<BaseProduct>>
 		get() = _productsSortByPopularNewArrivals
 
+	private val _catNameList: MutableLiveData<List<String>> = MutableLiveData<List<String>>()
+	val catNameList: LiveData<List<String>>
+		get() = _catNameList
+
 
 	init {
 		Log.d(logTag, "    --------> init:     BEFORE launch")
 		viewModelScope.launch {
 
+			val tempList = mutableListOf<String>()
 			val unfilteredCatList = App.repo.getAllProductCategories()
 			_unfilteredCategories.postValue(unfilteredCatList)
+
+			for (cat in unfilteredCatList) {
+				tempList.add(cat.categoryName)
+			}
+			_catNameList.postValue(tempList)
 
 			val stringIdTempList = mutableListOf(
 				"701",
@@ -66,7 +76,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 			)
 
 			val popularCategories = mutableListOf<Category>()
-
 			for (catId in stringIdTempList) {
 				for (cat in unfilteredCatList) {
 					if (catId.toInt() == cat.id) {
@@ -75,13 +84,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 				}
 				_popularCategories.postValue(popularCategories)
 			}
-
-
 			val popularNewProducts = App.repo.getProductListSortedByPopularNewArrival()
 			_productsSortByPopularNewArrivals.postValue(popularNewProducts)
-
 		}
+		Log.d(logTag, "home view model init:              AFTER init -------->    _catNameList.value?.size:   ${_catNameList.value?.size}")
 	}
+
 }
 
 
@@ -127,3 +135,15 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 //		}
 
 //			_validCatIdList.postValue(tempList)
+
+
+//	private fun getCatDropdownStrList(): List<String> {
+//		val nameList = mutableListOf<String>()
+//		if (!_unfilteredCategories.value.isNullOrEmpty()) {
+//			for (cat in _unfilteredCategories.value!!) {
+//				nameList.add(cat.categoryName)
+//			}
+//		}
+//		_catNameList.postValue(nameList)
+//		return nameList
+//	}

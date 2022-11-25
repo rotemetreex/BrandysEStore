@@ -25,10 +25,7 @@ class PopularProductsAdapter(private val popularProductList: List<BaseProduct>):
 
     override fun onBindViewHolder(holder: PopularProductsVH, position: Int) {
         with(holder.binding) {
-            Log.d(tag, "onBindViewHolder:   ------------- ${popularProductList[position]}")
             val popularProduct = popularProductList[position]
-            Log.d(tag, "onBindViewHolder:   ------------- ${popularProduct.productMainImageUrl}")
-            Log.d(tag, "onBindViewHolder:   ------------- ${popularProduct.appSalePrice}")
             println(popularProduct)
 
             val appPriceDouble = "${popularProduct.appSalePrice}"

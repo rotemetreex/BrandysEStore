@@ -139,3 +139,35 @@ class MagicAliExpressAPIRepo(
 //		}
 //		return populatedCatOnlySort
 //	}
+
+//	fun getCatDropdownStrList(): List<String> {
+//
+//		for (cat in mCatList) {
+//			mCatNames.add(cat.categoryName)
+//		}
+//
+//		return mCatNames
+//	}
+
+//	suspend fun getAllCatNames(): List<String> {
+//
+//		val calendar = Calendar.getInstance()
+//		val currentDate = calendar.time
+//		val sharedPrefs = context.getSharedPreferences("MAGIC_ALI_FILE", Context.MODE_PRIVATE)
+//		val nextUpdate = sharedPrefs.getLong("next_update_for_category_table", 0)
+//		val nextUpdateTime = Date(nextUpdate)
+//		val compare = currentDate.compareTo(nextUpdateTime)
+//
+//		val result = when {
+//
+//			compare >= 0 -> {
+//				for (cat in mCatList) {
+//					mCatNames.add(cat.categoryName)
+//				}
+//				catBaseDao.upsert(mCatNames)
+//				mCatNames
+//			}
+//			else -> {catBaseDao.getAll()}
+//		}
+//		return result
+//	}

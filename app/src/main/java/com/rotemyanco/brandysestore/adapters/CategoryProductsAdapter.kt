@@ -29,7 +29,6 @@ class CategoryProductsAdapter(
     override fun onBindViewHolder(holder: CategoryProductsVH, position: Int) {
             with(holder.binding) {
                 baseProduct = productsByCat[position]
-                println("****************  ${baseProduct.productId}  *****************")
                 tvNameProductBlock.text = baseProduct.productId
                 val url = baseProduct.productMainImageUrl
 
