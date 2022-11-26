@@ -47,36 +47,3 @@ class MainActivity : AppCompatActivity() {
 		return navController.navigateUp(appBarConfiguration)
 	}
 }
-
-
-//class Box<T>(t: T) {
-//    var value = t
-//}
-//
-//
-//class Box1(
-//    val _id: Int,
-//    t: Box<Category>
-//) {
-//    private val id: Int
-//        get() {
-//            TODO()
-//        }
-//}
-//
-//
-//
-//class Box2(
-//    val _id: Int,
-//    t: Box<BaseProduct>
-//) {
-//    private val id: Int
-//        get() {
-//            TODO()
-//        }
-//}
-//
-//
-//fun <T : Comparable<T>?> compare(t1: T, t2: T): Int {
-//    return t1!!.compareTo(t2)
-//}

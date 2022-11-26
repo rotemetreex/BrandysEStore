@@ -15,22 +15,22 @@
 
         <Button
             android:id="@+id/btn_browse_rcv_last_btn"
+            style="?android:borderlessButtonStyle"
             android:layout_width="150dp"
             android:layout_height="200dp"
+            android:fontFamily="@font/alegreya_sans_sc_medium_italic_downloadable"
+            android:gravity="center"
+            android:padding="25dp"
             android:text="@string/btn_browse_rcv_last_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
 
             android:textAllCaps="false"
-            android:fontFamily="cursive"
-            android:padding="25dp"
             android:textColor="@color/black"
             android:textSize="19sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
-            android:gravity="center"
-            style="?android:borderlessButtonStyle" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

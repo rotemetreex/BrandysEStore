@@ -29,7 +29,7 @@ class CategoryProductsAdapter(
     override fun onBindViewHolder(holder: CategoryProductsVH, position: Int) {
             with(holder.binding) {
                 baseProduct = productsByCat[position]
-                tvNameProductBlock.text = baseProduct.productId
+                tvNameProductBlock.text = baseProduct.productTitle
                 val url = baseProduct.productMainImageUrl
 
                 Glide

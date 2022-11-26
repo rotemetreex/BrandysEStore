@@ -128,7 +128,7 @@
 
                 android:nestedScrollingEnabled="false"
 
-                android:layout_height="235dp"
+                android:layout_height="265dp"
                 android:background="@color/black"
                 android:orientation="horizontal"
 

@@ -28,8 +28,10 @@ class PopularProductsAdapter(private val popularProductList: List<BaseProduct>):
             val popularProduct = popularProductList[position]
             println(popularProduct)
 
-            val appPriceDouble = "${popularProduct.appSalePrice}"
-            tvSmallTitlePopularInfoCard.text = appPriceDouble
+            val str = "${popularProduct.appSalePrice}  " + popularProduct.appSalePriceCurrency
+            tvPriceAndCurrencyPopularInfoCard.text = str
+            tvDescPopularInfoCard.text = popularProduct.productTitle
+
             val url = popularProduct.productMainImageUrl
 
             Glide

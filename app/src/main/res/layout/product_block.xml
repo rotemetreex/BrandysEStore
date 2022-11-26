@@ -15,7 +15,7 @@
             android:id="@+id/tv_name_product_block"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
+            android:fontFamily="@font/alegreya_sans_sc_medium_italic_downloadable"
             android:padding="15dp"
             android:text="@string/tv_small_title_info_card"
             android:textColor="@color/black"

@@ -100,4 +100,17 @@ class CategoryProductsFragment : Fragment() {
 		}
 		return binding.root
 	}
+
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+//		binding.tvHeaderFragCategoryProducts.text = mBaseProduct.firstLevelCategoryName
+//		binding.tvCatTitleFragCategoryProducts.text = mBaseProduct.secondLevelCategoryName
+	}
+
+
+
+
+
 }
