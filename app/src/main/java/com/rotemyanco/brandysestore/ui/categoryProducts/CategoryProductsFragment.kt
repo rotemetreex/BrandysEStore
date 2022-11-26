@@ -54,6 +54,9 @@ class CategoryProductsFragment : Fragment() {
 		binding = FragmentCategoryProductsBinding.inflate(inflater, container, false)
 
 		with(catProductsViewModel) {
+			val name = requireArguments().getString("CAT_NAME").toString()
+			binding.tvCatTitleFragCategoryProducts.text = name
+
 			val id = requireArguments().getString("CAT_ID").toString()
 			Log.d(logTag, "onCreateView:      CAT_ID  ---> $id")
 			getAllProductsByCategoryId(id)
@@ -100,17 +103,6 @@ class CategoryProductsFragment : Fragment() {
 		}
 		return binding.root
 	}
-
-
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-
-//		binding.tvHeaderFragCategoryProducts.text = mBaseProduct.firstLevelCategoryName
-//		binding.tvCatTitleFragCategoryProducts.text = mBaseProduct.secondLevelCategoryName
-	}
-
-
-
 
 
 }

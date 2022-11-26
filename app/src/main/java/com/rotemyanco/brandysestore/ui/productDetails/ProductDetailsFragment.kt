@@ -57,8 +57,6 @@ class ProductDetailsFragment : Fragment() {
 			tvProductDescFragDetails.text = mBaseProduct.productTitle
 			tvProductCatFragDetails.text = mBaseProduct.firstLevelCategoryName
 
-			tvProductDetailsUrlFragDetails.text = mBaseProduct.productDetailUrl
-
 			tvProductPriceFragDetails.text = (mBaseProduct.appSalePrice).toString()
 			tvCurrencyTypeFragDetails.text = mBaseProduct.appSalePriceCurrency
 

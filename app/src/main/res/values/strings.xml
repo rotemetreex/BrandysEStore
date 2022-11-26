@@ -13,7 +13,7 @@
     <string name="tv_product_cat_frag_details">Product Cat</string>
     <string name="iv_main_image_url_frag_details">Product Main Image URL</string>
     <string name="tv_product_details_url_frag_details">Product Details Url — Link</string>
-    <string name="tv_header_frag_category_products">Category Products</string>
+    <string name="tv_header_frag_category_products">Products By Category</string>
     <string name="tv_cat_title_frag_category_products">Category Name</string>
     <string name="tv_product_desc_frag_details">Product Description</string>
     <string name="tv_product_price_frag_details">Price Amount</string>
@@ -22,4 +22,8 @@
     <string name="btn_browse_rcv_last_btn">Browse more categories</string>
     <string name="et_search_frag_home">Search More Categories</string>
     <string name="tv_name_List_item_card">cat name</string>
+    <string name="title_about">About</string>
+    <string name="tv_header_frag_dashbord">About the App</string>
+    <string name="tv_api_name_about_frag">API: MagicAliExpressAPI</string>
+    <string name="tv_bullet_frag_about">•   an AliExpress API app\n\n• best categories recycler which features an autocompletetextview to search through all the categories.\n\n•   category products fragment\n\n•   product details fragment with navigation to the AliExpress product page.\n\n•   popular products recycler\n\n•   splash screen</string>
 </resources>

@@ -10,7 +10,9 @@ import com.rotemyanco.brandysestore.databinding.PopularInfoCardBinding
 import com.rotemyanco.brandysestore.models.BaseProduct
 
 
-class PopularProductsAdapter(private val popularProductList: List<BaseProduct>):
+class PopularProductsAdapter(
+    private val popularProductList: List<BaseProduct>,
+    private val onItemClicked: OnItemClick<BaseProduct>):
     RecyclerView.Adapter<PopularProductsAdapter.PopularProductsVH>() {
 
     private lateinit var context: Context
@@ -20,7 +22,7 @@ class PopularProductsAdapter(private val popularProductList: List<BaseProduct>):
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularProductsVH {
         context = parent.context
         val binding = PopularInfoCardBinding.inflate(LayoutInflater.from(context), parent, false)
-        return PopularProductsVH(binding)
+        return PopularProductsVH(binding, popularProductList, onItemClicked)
     }
 
     override fun onBindViewHolder(holder: PopularProductsVH, position: Int) {
@@ -46,5 +48,16 @@ class PopularProductsAdapter(private val popularProductList: List<BaseProduct>):
     override fun getItemCount(): Int = popularProductList.size
 
 
-    class PopularProductsVH(val binding: PopularInfoCardBinding): RecyclerView.ViewHolder(binding.root)
+    class PopularProductsVH(
+        val binding: PopularInfoCardBinding,
+        private val popularProductList: List<BaseProduct>,
+        private val onItemClicked: OnItemClick<BaseProduct>
+        ):
+        RecyclerView.ViewHolder(binding.root) {
+            init {
+            	binding.root.setOnClickListener {
+                    onItemClicked.onItemClick(popularProductList[adapterPosition])
+                }
+            }
+        }
 }

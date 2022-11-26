@@ -75,6 +75,7 @@ class HomeFragment : Fragment() {
 
 					val bundle = Bundle()
 					bundle.putString("CAT_ID", mCatId)
+					bundle.putString("CAT_NAME", item.categoryName)
 
 					findNavController(this@HomeFragment).navigate(
 						R.id.action_navigation_home_to_categoryProductsFragment,
@@ -91,7 +92,19 @@ class HomeFragment : Fragment() {
 				}
 			})
 
-		popularProductsAdapter = PopularProductsAdapter(mPopularProductListSortedByNewest)
+		popularProductsAdapter = PopularProductsAdapter(mPopularProductListSortedByNewest,
+			onItemClicked = object : OnItemClick<BaseProduct> {
+				override fun onItemClick(item: BaseProduct) {
+					val bundle = Bundle()
+					bundle.putSerializable("BASE_PRODUCT", item)
+
+					findNavController(this@HomeFragment).navigate(
+						R.id.action_navigation_home_to_productDetailsFragment,
+						bundle
+					)
+				}
+
+			})
 
 		with(binding) {
 			with(rcvCategoriesFragHome) {

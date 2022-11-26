@@ -35,7 +35,7 @@
         android:layout_height="0dp"
 
         android:background="#15517E"
-        android:fontFamily="cursive"
+        android:fontFamily="@font/alegreya_sans_sc_medium_italic_downloadable"
         android:gravity="center"
         android:text="@string/tv_cat_title_frag_category_products"
         android:textColor="@color/white"
@@ -58,7 +58,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="15dp"
-        android:background="#5C6E9C"
+        android:background="#877F82"
 
 
         app:layout_constraintBottom_toBottomOf="parent"

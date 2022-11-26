@@ -4,38 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#877F82"
     tools:context=".ui.productDetails.ProductDetailsFragment">
-
-    <TextView
-        android:id="@+id/tv_header_frag_details"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-
-        android:text="@string/tv_header_frag_details"
-        android:textSize="20sp"
-
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
 
     <TextView
         android:id="@+id/tv_product_desc_frag_details"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:padding="20dp"
+
         android:text="@string/tv_product_name_frag_details"
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/tv_product_cat_frag_details"
@@ -44,8 +31,11 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="@string/tv_product_cat_frag_details"
+        android:textSize="17sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tv_product_desc_frag_details"
-        app:layout_constraintTop_toBottomOf="@+id/tv_product_desc_frag_details" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_desc_frag_details"
+        tools:ignore="TextContrastCheck" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"
@@ -82,8 +72,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/tv_product_price_frag_details"
+        android:textSize="17sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/iv_main_image_url_frag_details"
-        app:layout_constraintTop_toBottomOf="@+id/iv_main_image_url_frag_details" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_main_image_url_frag_details"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/tv_currency_type_frag_details"
@@ -91,29 +84,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="@string/tv_currency_type_frag_details"
+        android:textSize="17sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tv_product_price_frag_details"
-        app:layout_constraintStart_toEndOf="@+id/tv_product_price_frag_details" />
+        app:layout_constraintStart_toEndOf="@+id/tv_product_price_frag_details"
+        tools:ignore="TextContrastCheck" />
 
-    <TextView
-        android:id="@+id/tv_product_details_url_frag_details"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/tv_product_details_url_frag_details"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/tv_product_price_frag_details" />
 
     <Button
         android:id="@+id/btn_goToAliExpress_frag_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:text="@string/btn_goToAliExpress_frag_details"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/tv_product_details_url_frag_details" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_price_frag_details" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
