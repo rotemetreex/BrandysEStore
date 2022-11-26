@@ -10,51 +10,50 @@ import com.rotemyanco.brandysestore.models.BaseProduct
 
 
 class CategoryProductsAdapter(
-    private val productsByCat: List<BaseProduct>,
-    private val onItemClicked: OnItemClick<BaseProduct>
-):
-    RecyclerView.Adapter<CategoryProductsAdapter.CategoryProductsVH>() {
+	private val productsByCat: List<BaseProduct>,
+	private val onItemClicked: OnItemClick<BaseProduct>
+) :
+	RecyclerView.Adapter<CategoryProductsAdapter.CategoryProductsVH>() {
 
-    private val logTag = "CategoryProductsAdapter"
-    private lateinit var baseProduct: BaseProduct
-    private lateinit var context: Context
+	private val logTag = "CategoryProductsAdapter"
+	private lateinit var baseProduct: BaseProduct
+	private lateinit var context: Context
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryProductsVH {
-        context = parent.context
-        val binding =
-            ProductBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CategoryProductsVH(binding, productsByCat, onItemClicked)
-    }
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryProductsVH {
+		context = parent.context
+		val binding =
+			ProductBlockBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+		return CategoryProductsVH(binding, productsByCat, onItemClicked)
+	}
 
-    override fun onBindViewHolder(holder: CategoryProductsVH, position: Int) {
-            with(holder.binding) {
-                baseProduct = productsByCat[position]
-                tvNameProductBlock.text = baseProduct.productTitle
-                val url = baseProduct.productMainImageUrl
+	override fun onBindViewHolder(holder: CategoryProductsVH, position: Int) {
+		with(holder.binding) {
+			baseProduct = productsByCat[position]
+			tvNameProductBlock.text = baseProduct.productTitle
+			val url = baseProduct.productMainImageUrl
 
-                Glide
-                    .with(context)
-                    .load(url)
-                    .fitCenter()
+			Glide
+				.with(context)
+				.load(url)
+				.fitCenter()
 //                .placeholder(R.drawable.loading_spinner)
-                    .into(ivImgProductBlock)
-            }
-    }
+				.into(ivImgProductBlock)
+		}
+	}
 
-    override fun getItemCount(): Int = productsByCat.size
+	override fun getItemCount(): Int = productsByCat.size
 
-    class CategoryProductsVH(
-        val binding: ProductBlockBinding,
-        private val  productsByCat: List<BaseProduct>,
-        private val onItemClicked: OnItemClick<BaseProduct>
-        ) :
-        RecyclerView.ViewHolder(binding.root)
-    {
-            init {
-                binding.root.setOnClickListener {
-                    onItemClicked.onItemClick(productsByCat[adapterPosition])
-                }
-            }
-        }
+	class CategoryProductsVH(
+		val binding: ProductBlockBinding,
+		private val productsByCat: List<BaseProduct>,
+		private val onItemClicked: OnItemClick<BaseProduct>
+	) :
+		RecyclerView.ViewHolder(binding.root) {
+		init {
+			binding.root.setOnClickListener {
+				onItemClicked.onItemClick(productsByCat[adapterPosition])
+			}
+		}
+	}
 
 }

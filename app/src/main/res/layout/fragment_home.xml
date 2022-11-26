@@ -23,7 +23,9 @@
             android:orientation="vertical">
 
 
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+
+
+            <AutoCompleteTextView
 
                 android:id="@+id/actv_search_frag_home"
 
@@ -44,7 +46,6 @@
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:completionThreshold="1"
-
                 android:inputType="text"
                 android:minHeight="52dp"
                 android:paddingStart="0dp"
@@ -62,8 +63,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TextContrastCheck">
 
-                <requestFocus />
-            </com.google.android.material.textfield.MaterialAutoCompleteTextView>
+            </AutoCompleteTextView>
 
             <TextView
                 android:id="@+id/tv_categories_med_title_frag_home"
@@ -154,6 +154,5 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.04" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

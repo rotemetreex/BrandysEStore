@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
@@ -33,12 +32,6 @@ class HomeFragment : Fragment() {
 
 	private lateinit var homeViewModel: HomeViewModel
 	private lateinit var categoryProductsViewModel: CategoryProductsViewModel
-
-//	private val mLayoutManager: LinearLayoutManager = LinearLayoutManager(
-//		this@HomeFragment.requireContext(),
-//		RecyclerView.HORIZONTAL,
-//		false
-//	)
 
 	private lateinit var categoryAdapter: CategoryAdapter
 	private lateinit var popularProductsAdapter: PopularProductsAdapter
@@ -85,10 +78,10 @@ class HomeFragment : Fragment() {
 			},
 			onLastBtnClick = object : OnItemClick<Int> {
 				override fun onItemClick(item: Int) {
-					binding.actvSearchFragHome.visibility =
-						if (item == R.id.btn_browse_rcv_last_btn) {
-							View.VISIBLE
-						} else View.GONE
+					if (item == R.id.btn_browse_rcv_last_btn) {
+						binding.actvSearchFragHome.visibility = View.VISIBLE
+						binding.actvSearchFragHome.requestFocus()
+					} else View.GONE
 				}
 			})
 
@@ -149,23 +142,6 @@ class HomeFragment : Fragment() {
 
 					with(actvSearch) {
 
-						setOnFocusChangeListener { view, e ->
-							actvSearch.requestFocus()
-
-//							(actvSearch as EditText).setText("")
-							actvSearch.performCompletion()
-							(actvSearch as TextView).text = ""
-							actvSearch.performClick()
-						}
-
-						setOnTouchListener(View.OnTouchListener { v, e ->
-							if (e.action == KeyEvent.ACTION_DOWN) {
-
-								v.performClick()
-								actvSearch.setSelection(actvSearch.text.length)
-							}
-							return@OnTouchListener true
-						})
 						setOnItemClickListener { parent, view, position, id ->
 
 							actvSearch.text = null
@@ -183,11 +159,6 @@ class HomeFragment : Fragment() {
 								R.id.action_navigation_home_to_categoryProductsFragment,
 								bundle
 							)
-						}
-						setOnDismissListener {
-							Log.d(logTag, "onCreateView:          ----> Suggestion is Closed")
-							imm.hideSoftInputFromWindow(actvSearch.windowToken, 0)
-
 						}
 					}
 				}

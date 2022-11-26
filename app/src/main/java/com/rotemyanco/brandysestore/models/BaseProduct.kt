@@ -7,7 +7,7 @@ import java.io.Serializable
 
 
 @Entity(tableName = "base_product")
-class BaseProduct(
+data class BaseProduct(
 
     var modificationDate: String,
 
