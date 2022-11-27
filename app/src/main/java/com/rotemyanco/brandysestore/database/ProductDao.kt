@@ -27,7 +27,3 @@ interface ProductDao {
 	suspend fun upsertBaseProduct(baseProduct: BaseProduct)
 
 }
-
-// 3) Get all BaseProduct image string urls as list
-//    @Query("SELECT * FROM base_product WHERE productId IN (:productId)")
-//    suspend fun getAllImageUrlsByProductId(productId: String): List<BaseProductSmallImageUrlsWithProductId>

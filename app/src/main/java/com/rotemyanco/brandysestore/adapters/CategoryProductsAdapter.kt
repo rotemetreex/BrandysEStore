@@ -36,7 +36,6 @@ class CategoryProductsAdapter(
 				.with(context)
 				.load(url)
 				.fitCenter()
-//                .placeholder(R.drawable.loading_spinner)
 				.into(ivImgProductBlock)
 		}
 	}

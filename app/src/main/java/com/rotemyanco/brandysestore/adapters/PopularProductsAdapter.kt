@@ -29,7 +29,6 @@ class PopularProductsAdapter(
 	override fun onBindViewHolder(holder: PopularProductsVH, position: Int) {
 		with(holder.binding) {
 			val popularProduct = popularProductList[position]
-			println(popularProduct)
 
 			val str = "${popularProduct.appSalePrice}  " + popularProduct.appSalePriceCurrency
 			tvPriceAndCurrencyPopularInfoCard.text = str
@@ -41,7 +40,6 @@ class PopularProductsAdapter(
 				.with(context)
 				.load(url)
 				.fitCenter()
-//                .placeholder(R.drawable.loading_spinner)
 				.into(ivSmallImagePopularInfoCard)
 		}
 	}

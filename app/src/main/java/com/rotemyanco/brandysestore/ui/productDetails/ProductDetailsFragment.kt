@@ -95,21 +95,3 @@ class ProductDetailsFragment : Fragment() {
 	}
 
 }
-
-
-//				if (
-//					(url.isNotBlank())
-//					&&
-//					(!url.startsWith("http:"))
-//					&&
-//					(!url.startsWith("https:"))
-//				) {
-//					url = "http:$url"
-//					uri = Uri.parse(url)
-//
-//					val i = Intent(Intent.ACTION_VIEW, uri)
-//					startActivity(i)
-//				} else {
-//					Toast.makeText(requireContext(), "Product has no link to ali express, please try again at a later time..", Toast.LENGTH_LONG).show()
-//					findNavController(this@ProductDetailsFragment).navigate(R.id.categoryProductsFragment)
-//				}

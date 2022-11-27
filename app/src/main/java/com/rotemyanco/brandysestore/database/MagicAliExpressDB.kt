@@ -26,7 +26,6 @@ abstract class MagicAliExpressDB : RoomDatabase() {
 				"MAGIC_ALI_EXPRESS_DB"
 			)
 				// there are 3 ways to declare the converter class ----> JUST ONE! more than 1 annotation - ERROR
-//                .addTypeConverter(Converters::class)
 				.fallbackToDestructiveMigration()
 				.build()
 		}

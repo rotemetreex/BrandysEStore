@@ -184,24 +184,3 @@ class HomeFragment : Fragment() {
 	}
 
 }
-
-
-// To animate view slide out from bottom to top
-//	private fun slideToTop(view: View) {
-//		view.visibility = View.VISIBLE
-//		val animate = TranslateAnimation(0F, 0F, 0F, (-view.height).toFloat())
-//		animate.duration = 500
-//		animate.fillAfter = true
-//		view.startAnimation(animate)
-//		view.visibility = View.GONE
-//	}
-
-
-//			val et = actvSearch as EditText
-//				with(et) {
-//					when (EditText::class.java) {
-//						this -> {
-//							setSelection(0)
-//						}
-//					}
-//			}

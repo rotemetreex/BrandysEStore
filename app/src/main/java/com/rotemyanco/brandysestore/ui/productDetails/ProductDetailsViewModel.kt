@@ -8,12 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.rotemyanco.brandysestore.App
 import com.rotemyanco.brandysestore.models.BaseProduct
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 class ProductDetailsViewModel(application: Application) :
 	AndroidViewModel(application) {
-
 
 	private val _baseProduct: MutableLiveData<BaseProduct> =
 		MutableLiveData<BaseProduct>()
@@ -32,20 +30,11 @@ class ProductDetailsViewModel(application: Application) :
 		_baseProductId.postValue(id)
 	}
 
-
 	init {
-
-//		runBlocking {
-//			val baseProduct = App.repo.getBaseProductById(baseProductId.value.toString())
-//			_baseProduct.postValue(baseProduct)
-//		}
-
-
 		viewModelScope.launch {
 			val baseProduct = App.repo.getBaseProductById(baseProductId.value.toString())
 			_baseProduct.postValue(baseProduct)
 		}
 	}
-
 
 }

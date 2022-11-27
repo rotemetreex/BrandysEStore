@@ -33,16 +33,10 @@ class MagicAliExpressAPIRepo(
 
 			val result = when {
 				compare >= 0 -> {
-					// get data from server:
 					service.getAllProductCategories()
 						.onSuccess {
 							mCatList.addAll(it)
 							Log.d(logTag, "getAllProductCategories:    -----> mCatList  is populated:  mCatList.size() = ${mCatList.size}")
-
-// 						set up a function to sift through empty categories!!
-//							val catListNoEmptyCatSort = sortPopulatedCategoriesOnly(mCatList)
-//							catDao.upsert(catListNoEmptyCatSort)
-
 							catDao.upsert(mCatList)
 							return@withContext it
 						}
@@ -75,14 +69,11 @@ class MagicAliExpressAPIRepo(
 			val result = when {
 				cmpr >= 0 -> {
 
-					// get data from server:
 					val popularProductListSortedByNewest =
 						service.getAllBestSalesProductsSortedByNewest()
-					// update category table in local DB:
 					productDao.upsertPopularProductsListSortedByNewest(
 						popularProductListSortedByNewest
 					)
-					println("****************    server call ******************")
 					calendar.add(Calendar.WEEK_OF_MONTH, 1)
 
 					with(sharedPrefs.edit()) {
@@ -96,7 +87,6 @@ class MagicAliExpressAPIRepo(
 					popularProductListSortedByNewest
 				}
 				else -> {
-					println("****************    DB call ******************")
 					productDao.getAllPopularNewArrivals()
 				}
 			}
