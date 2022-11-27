@@ -48,9 +48,8 @@
 
         android:layout_height="wrap_content"
         android:text="@string/tv_bullet_frag_about"
-
         android:inputType="textMultiLine"
-
+        android:focusable="false"
         android:padding="20dp"
         android:background="#A18EC5"
 

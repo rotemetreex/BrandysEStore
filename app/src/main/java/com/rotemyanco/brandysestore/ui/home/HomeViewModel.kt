@@ -53,7 +53,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 			}
 			_catNameList.postValue(tempList)
 
-			val stringIdTempList = mutableListOf(
+			val stringIdTempList = listOf(
 				"701",
 				"702",
 				"703",
@@ -78,16 +78,20 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 			val popularCategories = mutableListOf<Category>()
 			for (catId in stringIdTempList) {
 				for (cat in unfilteredCatList) {
-					if (catId.toInt() == cat.id) {
+					if (!popularCategories.contains(cat) && catId.toInt() == cat.id) {
 						popularCategories.add(cat)
 					}
 				}
-				_popularCategories.postValue(popularCategories)
 			}
+			Log.d(logTag, "INSIDE init     ---->             popularCategories.size:      ${popularCategories.size}")
+			Log.d(logTag, "INSIDE init     ---->             _popularCategories.value?.size:      ${_popularCategories.value?.size}")
+			_popularCategories.postValue(popularCategories)
+
 			val popularNewProducts = App.repo.getProductListSortedByPopularNewArrival()
 			_productsSortByPopularNewArrivals.postValue(popularNewProducts)
 		}
 		Log.d(logTag, "home view model init:              AFTER init -------->    _catNameList.value?.size:   ${_catNameList.value?.size}")
+		Log.d(logTag, "home view model init:              AFTER init -------->    _popularCategories.value?.size:   ${_popularCategories.value?.size}")
 	}
 
 }

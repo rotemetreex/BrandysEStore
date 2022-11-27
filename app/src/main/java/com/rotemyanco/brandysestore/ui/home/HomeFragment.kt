@@ -3,7 +3,6 @@ package com.rotemyanco.brandysestore.ui.home
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,79 +40,64 @@ class HomeFragment : Fragment() {
 	private var mPopularProductListSortedByNewest = mutableListOf<BaseProduct>()
 
 	private var mCatNameList = mutableListOf<String>()
-
-	private lateinit var mCatId: String
 	private lateinit var actvSearch: AutoCompleteTextView
-	private lateinit var imm: InputMethodManager
 
 
 	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
+		inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
 	): View {
 		homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 		categoryProductsViewModel = ViewModelProvider(this)[CategoryProductsViewModel::class.java]
 		binding = FragmentHomeBinding.inflate(inflater, container, false)
 		actvSearch = binding.actvSearchFragHome
 
-		imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+		categoryAdapter = CategoryAdapter(mCategoryList, onItemClicked = object : OnItemClick<Category> {
+			override fun onItemClick(item: Category) {
 
+				val bundle = Bundle()
+				bundle.putString("CAT_ID", (item.id).toString())
+				bundle.putString("CAT_NAME", item.categoryName)
 
-		categoryAdapter = CategoryAdapter(mCategoryList,
-			onItemClicked = object : OnItemClick<Category> {
-				override fun onItemClick(item: Category) {
-
-					mCatId = (item.id).toString()
-
-					val bundle = Bundle()
-					bundle.putString("CAT_ID", mCatId)
-					bundle.putString("CAT_NAME", item.categoryName)
-
-					findNavController(this@HomeFragment).navigate(
-						R.id.action_navigation_home_to_categoryProductsFragment,
-						bundle
-					)
-				}
-			},
-			onLastBtnClick = object : OnItemClick<Int> {
-				override fun onItemClick(item: Int) {
-					if (item == R.id.btn_browse_rcv_last_btn) {
+				findNavController(this@HomeFragment).navigate(
+					R.id.action_navigation_home_to_categoryProductsFragment, bundle
+				)
+			}
+		}, onLastBtnClick = object : OnItemClick<Int> {
+			override fun onItemClick(item: Int) {
+				when (item) {
+					R.id.btn_browse_rcv_last_btn -> {
 						binding.actvSearchFragHome.visibility = View.VISIBLE
 						binding.actvSearchFragHome.requestFocus()
-					} else View.GONE
+						showKeyBoard(true)
+					}
+					else -> View.GONE
 				}
-			})
+			}
+		})
 
-		popularProductsAdapter = PopularProductsAdapter(mPopularProductListSortedByNewest,
-			onItemClicked = object : OnItemClick<BaseProduct> {
-				override fun onItemClick(item: BaseProduct) {
-					val bundle = Bundle()
-					bundle.putSerializable("BASE_PRODUCT", item)
+		popularProductsAdapter = PopularProductsAdapter(mPopularProductListSortedByNewest, onItemClicked = object : OnItemClick<BaseProduct> {
+			override fun onItemClick(item: BaseProduct) {
+				val bundle = Bundle()
+				bundle.putSerializable("BASE_PRODUCT", item)
 
-					findNavController(this@HomeFragment).navigate(
-						R.id.action_navigation_home_to_productDetailsFragment,
-						bundle
-					)
-				}
+				findNavController(this@HomeFragment).navigate(
+					R.id.action_navigation_home_to_productDetailsFragment, bundle
+				)
+			}
 
-			})
+		})
 
 		with(binding) {
 			with(rcvCategoriesFragHome) {
 				adapter = categoryAdapter
 				layoutManager = LinearLayoutManager(
-					this@HomeFragment.requireContext(),
-					RecyclerView.HORIZONTAL,
-					false
+					this@HomeFragment.requireContext(), RecyclerView.HORIZONTAL, false
 				)
 			}
 			with(rcvNewestProductsFragHome) {
 				adapter = popularProductsAdapter
 				layoutManager = LinearLayoutManager(
-					this@HomeFragment.requireContext(),
-					RecyclerView.HORIZONTAL,
-					false
+					this@HomeFragment.requireContext(), RecyclerView.HORIZONTAL, false
 				)
 			}
 		}
@@ -127,14 +111,20 @@ class HomeFragment : Fragment() {
 
 			popularCategories.observe(viewLifecycleOwner) { t ->
 				t?.let {
-					mCategoryList.addAll(it)
-					categoryAdapter.notifyItemRangeChanged(0, mCategoryList.size)
+					if (mCategoryList.size == 0) {
+						mCategoryList.addAll(it)
+						categoryAdapter.notifyItemRangeChanged(0, mCategoryList.size)
+					}
 				}
 			}
 
 			unfilteredCategories.observe(viewLifecycleOwner) { t ->
 				t?.let {
-					mmCategoryList.addAll(it)
+					if (mmCategoryList.size == 0) {
+						mmCategoryList.addAll(it)
+						categoryAdapter.notifyItemRangeChanged(0, mmCategoryList.size)
+					}
+
 					val dropDownItemsResArray = mmCategoryList.toTypedArray()
 					val mAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, dropDownItemsResArray)
 					actvSearch.threshold = 1
@@ -143,21 +133,18 @@ class HomeFragment : Fragment() {
 					with(actvSearch) {
 
 						setOnItemClickListener { parent, view, position, id ->
-
+							showKeyBoard(false)
 							actvSearch.text = null
 							actvSearch.isFocusable = false
 
-							val selectedItem = parent.getItemAtPosition(position).toString()
-							val selectedItemId = (parent.getItemAtPosition(position) as Category).id
-							Log.d(logTag, "onCreateView:          ----> $selectedItem   ")
-							Log.d(logTag, "onCreateView:          ----> $selectedItemId   ")
+							val selectedObj = parent.getItemAtPosition(position) as Category
 
 							val bundle = Bundle()
-							bundle.putString("CAT_ID", selectedItemId.toString())
+							bundle.putString("CAT_ID", (selectedObj.id).toString())
+							bundle.putString("CAT_NAME", selectedObj.categoryName)
 
 							findNavController(this@HomeFragment).navigate(
-								R.id.action_navigation_home_to_categoryProductsFragment,
-								bundle
+								R.id.action_navigation_home_to_categoryProductsFragment, bundle
 							)
 						}
 					}
@@ -165,17 +152,33 @@ class HomeFragment : Fragment() {
 			}
 			catNameList.observe(viewLifecycleOwner) { t ->
 				t?.let {
-					mCatNameList.addAll(it)
+					if (mCatNameList.size == 0) {
+						mCatNameList.addAll(it)
+					}
 				}
 			}
 			productsSortByPopularNewArrivals.observe(viewLifecycleOwner) { t ->
 				t?.let {
-					mPopularProductListSortedByNewest.addAll(it)
-					popularProductsAdapter.notifyItemRangeChanged(
-						0,
-						mPopularProductListSortedByNewest.size
-					)
+					if (mPopularProductListSortedByNewest.size == 0) {
+						mPopularProductListSortedByNewest.addAll(it)
+						popularProductsAdapter.notifyItemRangeChanged(
+							0, mPopularProductListSortedByNewest.size
+						)
+					}
 				}
+			}
+		}
+	}
+
+
+	private fun showKeyBoard(status: Boolean) {
+		val view = activity?.currentFocus
+		if (view != null) {
+			val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+			if (status) {
+				imm.showSoftInput(view, 0)
+			} else {
+				imm.hideSoftInputFromWindow(view.windowToken, 0)
 			}
 		}
 	}

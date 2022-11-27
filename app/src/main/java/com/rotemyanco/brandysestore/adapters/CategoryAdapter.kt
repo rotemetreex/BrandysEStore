@@ -75,7 +75,7 @@ class CategoryAdapter(
 		init {
 			binding.root.setOnClickListener {
 				onItemClicked.onItemClick(categories[adapterPosition])
-				onLastBtnClick.onItemClick(R.id.btn_browse_rcv_last_btn)
+				onLastBtnClick.onItemClick(it.id)
 			}
 		}
 	}
