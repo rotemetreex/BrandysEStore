@@ -66,8 +66,9 @@ class HomeFragment : Fragment() {
 			override fun onItemClick(item: Int) {
 				when (item) {
 					R.id.btn_browse_rcv_last_btn -> {
-						binding.actvSearchFragHome.visibility = View.VISIBLE
-						binding.actvSearchFragHome.requestFocus()
+						actvSearch.visibility = View.VISIBLE
+						actvSearch.requestFocus()
+						actvSearch.text = null
 						showKeyBoard(true)
 					}
 					else -> View.GONE
@@ -134,8 +135,6 @@ class HomeFragment : Fragment() {
 
 						setOnItemClickListener { parent, view, position, id ->
 							showKeyBoard(false)
-							actvSearch.text = null
-							actvSearch.isFocusable = false
 
 							val selectedObj = parent.getItemAtPosition(position) as Category
 
